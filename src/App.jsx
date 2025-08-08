@@ -564,7 +564,7 @@ function App() {
       {/* Hero */}
       <section
         id="home"
-        className="relative overflow-hidden px-6 sm:px-8 md:px-12 lg:px-20 pt-20 pb-28 bg-gradient-to-b from-black to-[#0b0b0b]"
+        className="relative overflow-hidden px-6 sm:px-8 md:px-12 lg:px-20 pt-20 pb-36 md:pb-28 bg-gradient-to-b from-black to-[#0b0b0b]"
       >
         {/* Animated background blobs (slower, softer) */}
         <div className="pointer-events-none absolute inset-0 -z-10">
@@ -573,23 +573,23 @@ function App() {
           <div className="absolute -bottom-28 left-1/4 h-64 w-64 rounded-full bg-[#00ef68]/8 blur-3xl animate-[blob_30s_ease-in-out_infinite]" />
         </div>
         <div className="max-w-6xl mx-auto animate-[fadeInUp_0.7s_ease-out_both]">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">
             {/* Left: content */}
             <div className="text-center md:text-left">
               <p className="inline-flex items-center gap-2 text-xs mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-200">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#00ef68]" />
                 Full‑Stack Developer
               </p>
-              <h1 className="text-xl md:text-3xl font-bold tracking-tight leading-tight text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight text-white">
                 Hi, I’m Mimoh Shukla
               </h1>
               {/* Removed typewriter line per request */}
-              <p className="mt-4 text-gray-300 max-w-2xl mx-auto md:mx-0">
+              <p className="mt-3 sm:mt-4 text-gray-300 text-sm sm:text-base max-w-2xl mx-auto md:mx-0">
                 I design, build, and ship robust web apps end‑to‑end — from fast, accessible React UIs
                 <br className="hidden sm:block" />
                 to secure, scalable APIs and data layers.
               </p>
-              <div className="mt-8 flex justify-center md:justify-start gap-4">
+              <div className="mt-6 sm:mt-8 flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4">
                 <a
                   href="/resume.pdf"
                   target="_blank"
@@ -608,8 +608,8 @@ function App() {
               </div>
             </div>
             {/* Right: code terminal card (replaces penguin) */}
-            <div className="flex items-center justify-center">
-              <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg rounded-xl border border-white/10 bg-[#0f0f0f] backdrop-blur p-4 sm:p-5 shadow-2xl animate-[float_6s_ease-in-out_infinite]">
+            <div className="flex items-center justify-center mt-8 md:mt-0">
+              <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg rounded-xl border border-white/10 bg-[#0f0f0f] backdrop-blur p-3 sm:p-5 shadow-2xl animate-[float_6s_ease-in-out_infinite]">
                 <div className="flex items-center gap-1 mb-3 opacity-70">
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
