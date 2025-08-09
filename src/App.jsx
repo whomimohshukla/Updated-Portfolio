@@ -26,7 +26,7 @@ import { FiCode, FiStar } from "react-icons/fi";
 function TerminalCard() {
 	const [input, setInput] = useState("");
 	const [history, setHistory] = useState([
-		"✔ Ready in 0.22s — local: https://mimohshukla.vercel.app/",
+		"✔ https://mimohshukla.vercel.app/",
 		"type help to see commands",
 	]);
 
