@@ -1,5 +1,3 @@
-# Personal Portfolio (React + Vite + Tailwind)
-
 An interactive developer portfolio for Mimoh Shukla built with React, Vite, and Tailwind CSS. It features a terminal-style navigation, animated reveals, and GitHub activity widgets.
 
 ## Features
