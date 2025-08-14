@@ -442,19 +442,23 @@ function GithubStats({ username }) {
 
 	return (
 		<div className='max-w-6xl mx-auto grid gap-4 md:grid-cols-2'>
-			<Reveal
-				as='a'
-				className={cardClass}
-				href={`https://github.com/${username}`}
-				target='_blank'
-				rel='noreferrer'
-			>
-				<img
-					className={imgClass}
-					alt='GitHub stats'
-					src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=radical&bg_color=0f0f0f&title_color=ffffff&text_color=c9d1d9&icon_color=58a6ff&hide_border=true`}
-					loading='lazy'
-				/>
+			<Reveal as='div' className={cardClass}>
+				<a
+					href={`https://github.com/${username}`}
+					target='_blank'
+					rel='noreferrer'
+					className='block'
+				>
+					<img
+						className={imgClass}
+						alt='GitHub stats'
+						src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=radical&bg_color=0f0f0f&title_color=ffffff&text_color=c9d1d9&icon_color=58a6ff&hide_border=true`}
+						loading='lazy'
+					/>
+				</a>
+				<div className='mt-4'>
+					<LanguagesSummary username={username} />
+				</div>
 			</Reveal>
 			<div className='grid gap-4'>
 				<Reveal
@@ -566,6 +570,166 @@ function RepoGrid({ username }) {
 			))}
 		</div>
 	);
+}
+
+// Simple color palette for common languages (fallbacks to green)
+const LANG_COLORS = {
+  JavaScript: "#f1e05a",
+  TypeScript: "#3178c6",
+  HTML: "#e34c26",
+  CSS: "#563d7c",
+  Python: "#3572A5",
+  Java: "#b07219",
+  Go: "#00ADD8",
+  Rust: "#dea584",
+  C: "#555555",
+  "C++": "#00599C",
+  Shell: "#89e051",
+  PHP: "#4F5D95",
+  Ruby: "#701516",
+  Kotlin: "#A97BFF",
+  Swift: "#F05138",
+  Dart: "#00B4AB",
+  Scala: "#c22d40",
+  Vue: "#41B883",
+  Svelte: "#FF3E00",
+  "Jupyter Notebook": "#DA5B0B",
+  "Objective-C": "#438eff",
+};
+
+function LanguagesSummary({ username }) {
+  const [stats, setStats] = useState([]); // [{name, bytes, pct}]
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const token = import.meta?.env?.VITE_GH_TOKEN;
+    const headers = {
+      Accept: "application/vnd.github+json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
+    async function fetchAllReposAndLanguages() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch public repos (cap pages to limit rate usage)
+        const perPage = 100;
+        let page = 1;
+        let repos = [];
+        while (true) {
+          const url = `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}&type=public&sort=pushed`;
+          const res = await fetch(url, { headers });
+          if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+          const batch = await res.json();
+          repos = repos.concat(batch);
+          if (batch.length < perPage) break;
+          page += 1;
+          if (page > 2) break; // cap to ~200 repos
+        }
+
+        // Only consider non-fork, non-archived repos
+        const filtered = repos.filter((r) => !r.fork && !r.archived);
+        // Limit languages requests (e.g., most recently pushed 40)
+        const limited = filtered.slice(0, 40);
+
+        // Fetch languages per repo
+        const langMaps = await Promise.all(
+          limited.map(async (r) => {
+            try {
+              const res = await fetch(r.languages_url, { headers });
+              if (!res.ok) return {};
+              return await res.json();
+            } catch {
+              return {};
+            }
+          })
+        );
+
+        // Aggregate bytes per language
+        const totals = new Map();
+        for (const lm of langMaps) {
+          for (const [lang, bytes] of Object.entries(lm)) {
+            totals.set(lang, (totals.get(lang) || 0) + (typeof bytes === "number" ? bytes : 0));
+          }
+        }
+
+        // Prepare sorted list
+        const grand = Array.from(totals.values()).reduce((a, b) => a + b, 0);
+        const list = Array.from(totals.entries())
+          .map(([name, bytes]) => ({ name, bytes, pct: grand ? (bytes / grand) * 100 : 0 }))
+          .sort((a, b) => b.bytes - a.bytes)
+          .filter((x) => x.pct > 0.1) // drop tiny slivers
+          .slice(0, 12);
+
+        if (!cancelled) setStats(list);
+      } catch (e) {
+        if (!cancelled) setError(e.message || String(e));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchAllReposAndLanguages();
+    return () => {
+      cancelled = true;
+    };
+  }, [username]);
+
+  const cardClass =
+    "rounded-xl border border-white/10 bg-[#0f0f0f] p-4 hover:border-white/20 transition-colors";
+
+  if (loading) return <p className='text-gray-400'>Loading languages…</p>;
+  if (error) return <p className='text-red-400'>{error}</p>;
+  if (!stats.length)
+    return (
+      <div className={cardClass}>
+        <h4 className='text-white font-medium mb-2'>Languages</h4>
+        <p className='text-sm text-gray-400'>No language data found.</p>
+      </div>
+    );
+
+  return (
+    <div className={cardClass}>
+      <div className='flex items-center justify-between mb-3'>
+        <h4 className='text-white font-medium'>Languages</h4>
+        <FiCode className='text-gray-400' />
+      </div>
+      {/* Stacked bar */}
+      <div className='h-3 w-full rounded-full bg-white/5 overflow-hidden flex'>
+        {stats.map((it) => {
+          const color = LANG_COLORS[it.name] || "#00ef68";
+          return (
+            <div
+              key={it.name}
+              title={`${it.name}: ${it.pct.toFixed(1)}%`}
+              style={{ width: `${Math.max(1.5, it.pct)}%`, backgroundColor: color }}
+            />
+          );
+        })}
+      </div>
+      {/* Legend */}
+      <div className='mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2'>
+        {stats.map((it) => {
+          const color = LANG_COLORS[it.name] || "#00ef68";
+          return (
+            <div key={it.name} className='flex items-center justify-between text-xs'>
+              <span className='inline-flex items-center gap-2'>
+                <span
+                  className='h-2 w-2 rounded-full'
+                  style={{ backgroundColor: color }}
+                />
+                <span className='text-gray-200'>{it.name}</span>
+              </span>
+              <span className='text-gray-400'>{it.pct.toFixed(1)}%</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function SkillsGrid() {
@@ -760,7 +924,7 @@ function App() {
 								</a>
 								<a
 									href='#contact'
-									className='rounded-md bg-brownBlack text-white px-5 py-3 text-sm font-medium border border-white/10 hover:bg-brownBlack/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ef68]/60'
+									className='rounded-md bg-brownBlack text-white px-5 py-3 text-sm font-medium border border-white/10 hover:bg-brownBlack/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'
 								>
 									Contact Me
 								</a>
@@ -813,7 +977,7 @@ function App() {
 						href='https://github.com/whomimohshukla'
 						target='_blank'
 						rel='noreferrer'
-						className='inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-medium border border-white/10 hover:bg-white/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'
+						className='inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'
 						aria-label="Visit Mimoh's GitHub profile"
 						title='Visit GitHub Profile'
 					>
