@@ -497,317 +497,343 @@ function GithubStats({ username }) {
 }
 
 function RepoGrid({ username }) {
-    const [repos, setRepos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // {status, message}
-    const [refreshKey, setRefreshKey] = useState(0);
+	const [repos, setRepos] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null); // {status, message}
+	const [refreshKey, setRefreshKey] = useState(0);
 
-    useEffect(() => {
-        let ignore = false;
-        async function load() {
-            try {
-                setLoading(true);
-                const res = await fetch(
-                    `https://api.github.com/users/${username}/repos?sort=updated&per_page=12`
-                );
-                if (!res.ok) {
-                    const err = new Error(`GitHub API error: ${res.status}`);
-                    err.status = res.status;
-                    throw err;
-                }
-                const data = await res.json();
-                if (!ignore) setRepos(data);
-            } catch (e) {
-                if (!ignore)
-                    setError({ status: e.status || 0, message: e.message || "Request failed" });
-            } finally {
-                if (!ignore) setLoading(false);
-            }
-        }
-        load();
-        return () => {
-            ignore = true;
-        };
-    }, [username, refreshKey]);
+	useEffect(() => {
+		let ignore = false;
+		async function load() {
+			try {
+				setLoading(true);
+				const res = await fetch(
+					`https://api.github.com/users/${username}/repos?sort=updated&per_page=12`
+				);
+				if (!res.ok) {
+					const err = new Error(`GitHub API error: ${res.status}`);
+					err.status = res.status;
+					throw err;
+				}
+				const data = await res.json();
+				if (!ignore) setRepos(data);
+			} catch (e) {
+				if (!ignore)
+					setError({
+						status: e.status || 0,
+						message: e.message || "Request failed",
+					});
+			} finally {
+				if (!ignore) setLoading(false);
+			}
+		}
+		load();
+		return () => {
+			ignore = true;
+		};
+	}, [username, refreshKey]);
 
-    if (loading)
-        return (
-            <div className='rounded-xl border border-white/10 bg-[#0f0f0f] p-4'>
-                <p className='text-gray-400'>Loading repositories…</p>
-            </div>
-        );
-    if (error)
-        return (
-            <ErrorCard
-                title='Failed to load repositories'
-                status={error.status}
-                onRetry={() => setRefreshKey((k) => k + 1)}
-            />
-        );
+	if (loading)
+		return (
+			<div className='rounded-xl border border-white/10 bg-[#0f0f0f] p-4'>
+				<p className='text-gray-400'>Loading repositories…</p>
+			</div>
+		);
+	if (error)
+		return (
+			<ErrorCard
+				title='Failed to load repositories'
+				status={error.status}
+				onRetry={() => setRefreshKey((k) => k + 1)}
+			/>
+		);
 
-    return (
-        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-            {repos.map((r) => (
-                <a
-                    key={r.id}
-                    href={r.html_url}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='group rounded-xl border border-white/10 bg-[#0f0f0f] p-4 hover:border-white/20 transition-colors'
-                >
-                    <div className='flex items-center justify-between'>
-                        <h4 className='text-white font-medium group-hover:underline'>
-                            {r.name}
-                        </h4>
-                        <span className='inline-flex items-center gap-1 text-sm text-gray-400'>
-                            <FiStar /> {r.stargazers_count}
-                        </span>
-                    </div>
-                    {r.description && (
-                        <p className='mt-2 text-sm text-gray-300 line-clamp-2'>
-                            {r.description}
-                        </p>
-                    )}
-                    <div className='mt-3 flex items-center gap-3 text-xs text-gray-400'>
-                        {r.language && (
-                            <span className='inline-flex items-center gap-1'>
-                                <span className='h-2 w-2 rounded-full bg-white/50' />{" "}
-                                {r.language}
-                            </span>
-                        )}
-                        {r.fork && (
-                            <span className='px-2 py-0.5 rounded-full bg-white/5 border border-white/10'>
-                                fork
-                            </span>
-                        )}
-                        <span>
-                            Updated {new Date(r.updated_at).toLocaleDateString()}
-                        </span>
-                    </div>
-                </a>
-            ))}
-        </div>
-    );
+	return (
+		<div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+			{repos.map((r) => (
+				<a
+					key={r.id}
+					href={r.html_url}
+					target='_blank'
+					rel='noreferrer'
+					className='group rounded-xl border border-white/10 bg-[#0f0f0f] p-4 hover:border-white/20 transition-colors'
+				>
+					<div className='flex items-center justify-between'>
+						<h4 className='text-white font-medium group-hover:underline'>
+							{r.name}
+						</h4>
+						<span className='inline-flex items-center gap-1 text-sm text-gray-400'>
+							<FiStar /> {r.stargazers_count}
+						</span>
+					</div>
+					{r.description && (
+						<p className='mt-2 text-sm text-gray-300 line-clamp-2'>
+							{r.description}
+						</p>
+					)}
+					<div className='mt-3 flex items-center gap-3 text-xs text-gray-400'>
+						{r.language && (
+							<span className='inline-flex items-center gap-1'>
+								<span className='h-2 w-2 rounded-full bg-white/50' />{" "}
+								{r.language}
+							</span>
+						)}
+						{r.fork && (
+							<span className='px-2 py-0.5 rounded-full bg-white/5 border border-white/10'>
+								fork
+							</span>
+						)}
+						<span>
+							Updated {new Date(r.updated_at).toLocaleDateString()}
+						</span>
+					</div>
+				</a>
+			))}
+		</div>
+	);
 }
 
 function ErrorCard({ title = "Something went wrong", status, onRetry }) {
-    const isRateLimit = status === 403;
-    return (
-        <div className='rounded-xl border border-red-500/20 bg-red-500/5 p-4'>
-            <div className='flex items-start gap-3'>
-                <FiAlertTriangle className='text-red-400 mt-0.5 shrink-0' />
-                <div className='flex-1'>
-                    <h4 className='text-white font-medium'>{title}</h4>
-                    <p className='text-sm text-gray-300 mt-1'>
-                        {isRateLimit
-                            ? "GitHub rate limit reached. Please try again later or add a GitHub token to increase limits."
-                            : "Please check your connection and try again."}
-                    </p>
-                    {isRateLimit && (
-                        <p className='text-xs text-gray-400 mt-1'>
-                            Tip: create a personal access token and add it to your .env.local as VITE_GH_TOKEN.
-                        </p>
-                    )}
-                    {onRetry && (
-                        <button
-                            onClick={onRetry}
-                            className='mt-3 inline-flex items-center gap-2 rounded-md bg-white text-black px-3 py-1.5 text-xs font-medium hover:bg-white/90 transition'
-                        >
-                            Retry
-                        </button>
-                    )}
-                </div>
-                {status ? (
-                    <span className='text-xs text-gray-400'>HTTP {status}</span>
-                ) : null}
-            </div>
-        </div>
-    );
+	const isRateLimit = status === 403;
+	return (
+		<div className='rounded-xl border border-red-500/20 bg-red-500/5 p-4'>
+			<div className='flex items-start gap-3'>
+				<FiAlertTriangle className='text-red-400 mt-0.5 shrink-0' />
+				<div className='flex-1'>
+					<h4 className='text-white font-medium'>{title}</h4>
+					<p className='text-sm text-gray-300 mt-1'>
+						{isRateLimit
+							? "GitHub rate limit reached. Please try again later or add a GitHub token to increase limits."
+							: "Please check your connection and try again."}
+					</p>
+					{isRateLimit && (
+						<p className='text-xs text-gray-400 mt-1'>
+							Tip: create a personal access token and add it to your
+							.env.local as VITE_GH_TOKEN.
+						</p>
+					)}
+					{onRetry && (
+						<button
+							onClick={onRetry}
+							className='mt-3 inline-flex items-center gap-2 rounded-md bg-white text-black px-3 py-1.5 text-xs font-medium hover:bg-white/90 transition'
+						>
+							Retry
+						</button>
+					)}
+				</div>
+				{status ? (
+					<span className='text-xs text-gray-400'>HTTP {status}</span>
+				) : null}
+			</div>
+		</div>
+	);
 }
 
 // Simple color palette for common languages (fallbacks to green)
 const LANG_COLORS = {
-  JavaScript: "#f1e05a",
-  TypeScript: "#3178c6",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  Python: "#3572A5",
-  Java: "#b07219",
-  Go: "#00ADD8",
-  Rust: "#dea584",
-  C: "#555555",
-  "C++": "#00599C",
-  Shell: "#89e051",
-  PHP: "#4F5D95",
-  Ruby: "#701516",
-  Kotlin: "#A97BFF",
-  Swift: "#F05138",
-  Dart: "#00B4AB",
-  Scala: "#c22d40",
-  Vue: "#41B883",
-  Svelte: "#FF3E00",
-  "Jupyter Notebook": "#DA5B0B",
-  "Objective-C": "#438eff",
+	JavaScript: "#f1e05a",
+	TypeScript: "#3178c6",
+	HTML: "#e34c26",
+	CSS: "#563d7c",
+	Python: "#3572A5",
+	Java: "#b07219",
+	Go: "#00ADD8",
+	Rust: "#dea584",
+	C: "#555555",
+	"C++": "#00599C",
+	Shell: "#89e051",
+	PHP: "#4F5D95",
+	Ruby: "#701516",
+	Kotlin: "#A97BFF",
+	Swift: "#F05138",
+	Dart: "#00B4AB",
+	Scala: "#c22d40",
+	Vue: "#41B883",
+	Svelte: "#FF3E00",
+	"Jupyter Notebook": "#DA5B0B",
+	"Objective-C": "#438eff",
 };
 
 function LanguagesSummary({ username }) {
-  const [stats, setStats] = useState([]); // [{name, bytes, pct}]
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // {status, message}
-  const [refreshKey, setRefreshKey] = useState(0);
+	const [stats, setStats] = useState([]); // [{name, bytes, pct}]
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null); // {status, message}
+	const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    let cancelled = false;
-    const token = import.meta?.env?.VITE_GH_TOKEN;
-    const headers = {
-      Accept: "application/vnd.github+json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
+	useEffect(() => {
+		let cancelled = false;
+		const token = import.meta?.env?.VITE_GH_TOKEN;
+		const headers = {
+			Accept: "application/vnd.github+json",
+			...(token ? { Authorization: `Bearer ${token}` } : {}),
+		};
 
-    async function fetchAllReposAndLanguages() {
-      try {
-        setLoading(true);
-        setError(null);
+		async function fetchAllReposAndLanguages() {
+			try {
+				setLoading(true);
+				setError(null);
 
-        // Fetch public repos (cap pages to limit rate usage)
-        const perPage = 100;
-        let page = 1;
-        let repos = [];
-        while (true) {
-          const url = `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}&type=public&sort=pushed`;
-          const res = await fetch(url, { headers });
-          if (!res.ok) {
-            const err = new Error(`GitHub API error: ${res.status}`);
-            err.status = res.status;
-            throw err;
-          }
-          const batch = await res.json();
-          repos = repos.concat(batch);
-          if (batch.length < perPage) break;
-          page += 1;
-          if (page > 2) break; // cap to ~200 repos
-        }
+				// Fetch public repos (cap pages to limit rate usage)
+				const perPage = 100;
+				let page = 1;
+				let repos = [];
+				while (true) {
+					const url = `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}&type=public&sort=pushed`;
+					const res = await fetch(url, { headers });
+					if (!res.ok) {
+						const err = new Error(`GitHub API error: ${res.status}`);
+						err.status = res.status;
+						throw err;
+					}
+					const batch = await res.json();
+					repos = repos.concat(batch);
+					if (batch.length < perPage) break;
+					page += 1;
+					if (page > 2) break; // cap to ~200 repos
+				}
 
-        // Only consider non-fork, non-archived repos
-        const filtered = repos.filter((r) => !r.fork && !r.archived);
-        // Limit languages requests (e.g., most recently pushed 40)
-        const limited = filtered.slice(0, 40);
+				// Only consider non-fork, non-archived repos
+				const filtered = repos.filter((r) => !r.fork && !r.archived);
+				// Limit languages requests (e.g., most recently pushed 40)
+				const limited = filtered.slice(0, 40);
 
-        // Fetch languages per repo
-        const langMaps = await Promise.all(
-          limited.map(async (r) => {
-            try {
-              const res = await fetch(r.languages_url, { headers });
-              if (!res.ok) {
-                // propagate a synthetic error for rate limit to show proper UI
-                const err = new Error(`GitHub API error: ${res.status}`);
-                err.status = res.status;
-                throw err;
-              }
-              return await res.json();
-            } catch (e) {
-              // If any language request fails with 403, bubble up a single 403
-              if (e && e.status) throw e;
-              return {};
-            }
-          })
-        );
+				// Fetch languages per repo
+				const langMaps = await Promise.all(
+					limited.map(async (r) => {
+						try {
+							const res = await fetch(r.languages_url, { headers });
+							if (!res.ok) {
+								// propagate a synthetic error for rate limit to show proper UI
+								const err = new Error(
+									`GitHub API error: ${res.status}`
+								);
+								err.status = res.status;
+								throw err;
+							}
+							return await res.json();
+						} catch (e) {
+							// If any language request fails with 403, bubble up a single 403
+							if (e && e.status) throw e;
+							return {};
+						}
+					})
+				);
 
-        // Aggregate bytes per language
-        const totals = new Map();
-        for (const lm of langMaps) {
-          for (const [lang, bytes] of Object.entries(lm)) {
-            totals.set(lang, (totals.get(lang) || 0) + (typeof bytes === "number" ? bytes : 0));
-          }
-        }
+				// Aggregate bytes per language
+				const totals = new Map();
+				for (const lm of langMaps) {
+					for (const [lang, bytes] of Object.entries(lm)) {
+						totals.set(
+							lang,
+							(totals.get(lang) || 0) +
+								(typeof bytes === "number" ? bytes : 0)
+						);
+					}
+				}
 
-        // Prepare sorted list
-        const grand = Array.from(totals.values()).reduce((a, b) => a + b, 0);
-        const list = Array.from(totals.entries())
-          .map(([name, bytes]) => ({ name, bytes, pct: grand ? (bytes / grand) * 100 : 0 }))
-          .sort((a, b) => b.bytes - a.bytes)
-          .filter((x) => x.pct > 0.1) // drop tiny slivers
-          .slice(0, 12);
+				// Prepare sorted list
+				const grand = Array.from(totals.values()).reduce(
+					(a, b) => a + b,
+					0
+				);
+				const list = Array.from(totals.entries())
+					.map(([name, bytes]) => ({
+						name,
+						bytes,
+						pct: grand ? (bytes / grand) * 100 : 0,
+					}))
+					.sort((a, b) => b.bytes - a.bytes)
+					.filter((x) => x.pct > 0.1) // drop tiny slivers
+					.slice(0, 12);
 
-        if (!cancelled) setStats(list);
-      } catch (e) {
-        if (!cancelled)
-          setError({ status: e.status || 0, message: e.message || String(e) });
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
+				if (!cancelled) setStats(list);
+			} catch (e) {
+				if (!cancelled)
+					setError({
+						status: e.status || 0,
+						message: e.message || String(e),
+					});
+			} finally {
+				if (!cancelled) setLoading(false);
+			}
+		}
 
-    fetchAllReposAndLanguages();
-    return () => {
-      cancelled = true;
-    };
-  }, [username, refreshKey]);
+		fetchAllReposAndLanguages();
+		return () => {
+			cancelled = true;
+		};
+	}, [username, refreshKey]);
 
-  const cardClass =
-    "rounded-xl border border-white/10 bg-[#0f0f0f] p-4 hover:border-white/20 transition-colors";
+	const cardClass =
+		"rounded-xl border border-white/10 bg-[#0f0f0f] p-4 hover:border-white/20 transition-colors";
 
-  if (loading)
-    return (
-      <div className='rounded-xl border border-white/10 bg-[#0f0f0f] p-4'>
-        <p className='text-gray-400'>Loading languages…</p>
-      </div>
-    );
-  if (error)
-    return (
-      <ErrorCard
-        title='Failed to load languages'
-        status={error.status}
-        onRetry={() => setRefreshKey((k) => k + 1)}
-      />
-    );
-  if (!stats.length)
-    return (
-      <div className={cardClass}>
-        <h4 className='text-white font-medium mb-2'>Languages</h4>
-        <p className='text-sm text-gray-400'>No language data found.</p>
-      </div>
-    );
+	if (loading)
+		return (
+			<div className='rounded-xl border border-white/10 bg-[#0f0f0f] p-4'>
+				<p className='text-gray-400'>Loading languages…</p>
+			</div>
+		);
+	if (error)
+		return (
+			<ErrorCard
+				title='Failed to load languages'
+				status={error.status}
+				onRetry={() => setRefreshKey((k) => k + 1)}
+			/>
+		);
+	if (!stats.length)
+		return (
+			<div className={cardClass}>
+				<h4 className='text-white font-medium mb-2'>Languages</h4>
+				<p className='text-sm text-gray-400'>No language data found.</p>
+			</div>
+		);
 
-  return (
-    <div className={cardClass}>
-      <div className='flex items-center justify-between mb-3'>
-        <h4 className='text-white font-medium'>Languages</h4>
-        <FiCode className='text-gray-400' />
-      </div>
-      {/* Stacked bar */}
-      <div className='h-3 w-full rounded-full bg-white/5 overflow-hidden flex'>
-        {stats.map((it) => {
-          const color = LANG_COLORS[it.name] || "#00ef68";
-          return (
-            <div
-              key={it.name}
-              title={`${it.name}: ${it.pct.toFixed(1)}%`}
-              style={{ width: `${Math.max(1.5, it.pct)}%`, backgroundColor: color }}
-            />
-          );
-        })}
-      </div>
-      {/* Legend */}
-      <div className='mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2'>
-        {stats.map((it) => {
-          const color = LANG_COLORS[it.name] || "#00ef68";
-          return (
-            <div key={it.name} className='flex items-center justify-between text-xs'>
-              <span className='inline-flex items-center gap-2'>
-                <span
-                  className='h-2 w-2 rounded-full'
-                  style={{ backgroundColor: color }}
-                />
-                <span className='text-gray-200'>{it.name}</span>
-              </span>
-              <span className='text-gray-400'>{it.pct.toFixed(1)}%</span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+	return (
+		<div className={cardClass}>
+			<div className='flex items-center justify-between mb-3'>
+				<h4 className='text-white font-medium'>Languages</h4>
+				<FiCode className='text-gray-400' />
+			</div>
+			{/* Stacked bar */}
+			<div className='h-3 w-full rounded-full bg-white/5 overflow-hidden flex'>
+				{stats.map((it) => {
+					const color = LANG_COLORS[it.name] || "#00ef68";
+					return (
+						<div
+							key={it.name}
+							title={`${it.name}: ${it.pct.toFixed(1)}%`}
+							style={{
+								width: `${Math.max(1.5, it.pct)}%`,
+								backgroundColor: color,
+							}}
+						/>
+					);
+				})}
+			</div>
+			{/* Legend */}
+			<div className='mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2'>
+				{stats.map((it) => {
+					const color = LANG_COLORS[it.name] || "#00ef68";
+					return (
+						<div
+							key={it.name}
+							className='flex items-center justify-between text-xs'
+						>
+							<span className='inline-flex items-center gap-2'>
+								<span
+									className='h-2 w-2 rounded-full'
+									style={{ backgroundColor: color }}
+								/>
+								<span className='text-gray-200'>{it.name}</span>
+							</span>
+							<span className='text-gray-400'>{it.pct.toFixed(1)}%</span>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
 }
 
 function SkillsGrid() {
@@ -992,7 +1018,7 @@ function App() {
 							</p>
 							<div className='mt-6 sm:mt-8 flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4'>
 								<a
-									href='/resume.pdf'
+									href='/mimohUpdated.pdf'
 									target='_blank'
 									rel='noreferrer'
 									download
