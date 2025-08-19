@@ -850,6 +850,7 @@ function SkillsGrid() {
 		{ name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
 		{ name: "Postgres", Icon: SiPostgresql, color: "#336791" },
 		{ name: "Redis", Icon: SiRedis, color: "#DC382D" },
+		{ name: "BullMQ", Icon: SiRedis, color: "#DC382D" },
 		{ name: "Docker", Icon: SiDocker, color: "#2496ED" },
 		{ name: "Nginx", Icon: SiNginx, color: "#009639" },
 		{ name: "Razorpay", Icon: SiRazorpay, color: "#0C2E8A" },

@@ -21,6 +21,13 @@ An interactive developer portfolio for Mimoh Shukla built with React, Vite, and 
 - ESLint 9
 - react-icons
 
+## Skills
+
+- Front-end: React, Vite, Tailwind CSS
+- Languages: JavaScript/TypeScript
+- Tooling: ESLint, react-icons
+- Back-end/Infra: BullMQ, Redis
+
 ## Getting Started
 
 Prerequisites:
