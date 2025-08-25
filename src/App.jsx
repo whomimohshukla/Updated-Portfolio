@@ -1019,7 +1019,7 @@ function App() {
 							</p>
 							<div className='mt-6 sm:mt-8 flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4'>
 								<a
-									href='/mimohUpdated.pdf'
+									href='/public/FullstackINTERN.pdf'
 									target='_blank'
 									rel='noreferrer'
 									download
