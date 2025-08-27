@@ -907,6 +907,15 @@ function App() {
 			live: "https://book-my-bus-qnm6.vercel.app/",
 			image: "/projects/bookmybus.png",
 		},
+
+		{
+			title: "DevSwap",
+			desc: "A platform for developers to connect and swap skills/projects with a clean, fast experience.",
+			tech: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS"],
+			github: "https://github.com/whomimohshukla/devSwap.live",
+			live: "https://devswap.live",
+			image: "/projects/devswap.png",
+		},
 		{
 			title: "SkillBridge",
 			desc: "Marketplace for clients and freelancers: post gigs, proposals, messaging, and secure payments flow.",
