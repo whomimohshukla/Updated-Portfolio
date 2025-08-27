@@ -1130,15 +1130,23 @@ function App() {
 							className='group relative rounded-2xl border border-white/10 bg-[#0f0f0f] overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.6)] hover:-translate-y-1'
 						>
 							<div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-white/5 to-transparent' />
-							<div className='h-40 w-full overflow-hidden bg-gradient-to-br from-brownBlack/70 to-black'>
+							<div className='relative w-full aspect-[16/9] overflow-hidden rounded-t-2xl bg-[#0c0c0c] ring-1 ring-white/10'>
 								{p.image ? (
 									<img
 										src={p.image}
 										alt={`${p.title} preview`}
-										className='h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]'
+										className='absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.05]'
 										loading='lazy'
+										decoding='async'
+										sizes='(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
 									/>
-								) : null}
+								) : (
+									<div className='absolute inset-0 flex items-center justify-center text-gray-500 text-sm bg-gradient-to-br from-brownBlack/70 to-black'>
+										No preview
+									</div>
+								)}
+								{/* subtle vignette overlay */}
+								<div className='pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_60%,rgba(0,0,0,0.25)_100%)]' />
 							</div>
 							<div className='p-6'>
 								<h3 className='text-lg font-medium text-white'>
