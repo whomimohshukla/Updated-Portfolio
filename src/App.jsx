@@ -904,10 +904,11 @@ function App() {
 			desc: "Full‑stack bus ticketing platform with searchable routes, seat selection, authentication, and admin tools.",
 			tech: ["React", "Node.js", "Express", "MongoDB", "JWT", "TailwindCSS"],
 			github: "https://github.com/whomimohshukla/Book-My-Bus",
-			live: "https://book-my-bus-nine.vercel.app",
+			live: "https://book-my-bus-qnm6.vercel.app/",
+			image: "/projects/bookmybus.png",
 		},
 		{
-			title: "Freelance Marketplace",
+			title: "SkillBridge",
 			desc: "Marketplace for clients and freelancers: post gigs, proposals, messaging, and secure payments flow.",
 			tech: [
 				"React",
@@ -920,12 +921,14 @@ function App() {
 			github:
 				"https://github.com/whomimohshukla/-Freelance-Marketplace--Project",
 			live: "https://skill-bridge-frontent-v-1-0-0.vercel.app/",
+			image: "/projects/skillbridge.png",
 		},
 		{
 			title: "Chatr — Realtime Chat",
 			desc: "Realtime chat application with rooms/DMs, presence, and typing indicators powered by websockets.",
 			tech: ["React", "Socket.io", "Node.js", "Express", "MongoDB"],
 			github: "https://github.com/whomimohshukla/Chatr-",
+			image: "https://picsum.photos/seed/chatr/800/450",
 		},
 		{
 			title: "Weather App (JavaScript)",
@@ -933,6 +936,7 @@ function App() {
 			tech: ["HTML", "CSS", "JavaScript", "OpenWeather API"],
 			github: "https://github.com/whomimohshukla/Whether-using-javascript",
 			live: "https://weathercurrenthere.netlify.app",
+			image: "/projects/weatherAPP.png",
 		},
 	];
 
@@ -1126,7 +1130,16 @@ function App() {
 							className='group relative rounded-2xl border border-white/10 bg-[#0f0f0f] overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.6)] hover:-translate-y-1'
 						>
 							<div className='absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-white/5 to-transparent' />
-							<div className='h-40 bg-gradient-to-br from-brownBlack/70 to-black' />
+							<div className='h-40 w-full overflow-hidden bg-gradient-to-br from-brownBlack/70 to-black'>
+								{p.image ? (
+									<img
+										src={p.image}
+										alt={`${p.title} preview`}
+										className='h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]'
+										loading='lazy'
+									/>
+								) : null}
+							</div>
 							<div className='p-6'>
 								<h3 className='text-lg font-medium text-white'>
 									{p.title}
