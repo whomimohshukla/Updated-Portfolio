@@ -893,7 +893,7 @@ function App() {
       desc: "A platform for developers to connect and swap skills/projects with a clean, fast experience.",
       tech: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS"],
       github: "https://github.com/whomimohshukla/devSwap.live",
-      live: "https://devswap.live",
+      live: "https://dev-swap-live.vercel.app/",
       image: "/projects/devswap.png",
     },
     {
