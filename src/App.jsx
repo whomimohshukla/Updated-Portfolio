@@ -1187,32 +1187,46 @@ function App() {
 
       {/* Contact */}
       <Section id="contact" title="Get In Touch">
-        <p>
-          Have a project in mind or just want to say hi? Drop me a line and I’ll
-          get back to you.
-        </p>
-        <form className="mt-6 grid gap-4 max-w-xl">
-          <input
-            className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
-            placeholder="Your name"
-          />
-          <input
-            className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
-            type="email"
-            placeholder="Email"
-          />
-          <textarea
-            className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
-            rows="4"
-            placeholder="Message"
-          />
-          <button
-            type="submit"
-            className="inline-flex justify-center rounded-md bg-brownBlack px-5 py-3 text-sm font-medium text-white border border-white/10 hover:bg-brownBlack/90"
-          >
-            Send Message
-          </button>
-        </form>
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-2xl border border-white/10 bg-[#0f0f0f] p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
+            <p className="text-center text-gray-300">
+              Have a project in mind or just want to say hi? Drop me a line and
+              I’ll get back to you.
+            </p>
+            <form className="mt-6 grid gap-4" aria-label="contact form">
+              <input
+                className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
+                placeholder="Your name"
+                name="name"
+                aria-label="Your name"
+                autoComplete="name"
+              />
+              <input
+                className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
+                type="email"
+                placeholder="Email"
+                name="email"
+                aria-label="Email"
+                autoComplete="email"
+              />
+              <textarea
+                className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
+                rows="4"
+                placeholder="Message"
+                name="message"
+                aria-label="Message"
+              />
+              <div className="pt-2 flex justify-center">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-md bg-brownBlack px-5 py-3 text-sm font-medium text-white border border-white/10 hover:bg-brownBlack/90"
+                >
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </Section>
 
       {/* Footer */}
