@@ -910,7 +910,7 @@ function App() {
       desc: "Realtime chat application with rooms/DMs, presence, and typing indicators powered by websockets.",
       tech: ["React", "Socket.io", "Node.js", "Express", "MongoDB"],
       github: "https://github.com/whomimohshukla/Chatr-",
-      image: "/projects/chatr.png",
+      image: "/projects/chatrr.png",
       live: "https://chatr-flame.vercel.app/",
     },
     {
