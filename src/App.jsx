@@ -910,7 +910,8 @@ function App() {
       desc: "Realtime chat application with rooms/DMs, presence, and typing indicators powered by websockets.",
       tech: ["React", "Socket.io", "Node.js", "Express", "MongoDB"],
       github: "https://github.com/whomimohshukla/Chatr-",
-      image: "https://picsum.photos/seed/chatr/800/450",
+      image: "/projects/chatr.png",
+      live: "https://chatr-flame.vercel.app/",
     },
     {
       title: "Weather App (JavaScript)",
