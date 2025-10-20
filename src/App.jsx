@@ -1073,7 +1073,7 @@ function App() {
             {
               company: "Small Fare™",
               role: "Full Stack Developer (Intern)",
-              logo: "",
+              logo: "/smallfare_logo.jpeg",
               location: "Hyderabad, Telangana, India • Remote",
               dates: "Sep 2025 – Present",
               bullets: [],
