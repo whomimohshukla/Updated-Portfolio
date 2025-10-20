@@ -46,12 +46,16 @@ function TerminalCard() {
   const commands = {
     help: () => {
       append(
-        "Available: projects, skills, contact, about, github, linkedin, top, clear, help"
+        "Available: projects, experience, skills, contact, about, github, linkedin, top, clear, help"
       );
     },
     projects: () => {
       if (!scrollToSection("projects"))
         append("Could not find section: projects");
+    },
+    experience: () => {
+      if (!scrollToSection("experience"))
+        append("Could not find section: experience");
     },
     skills: () => {
       if (!scrollToSection("skills")) append("Could not find section: skills");
@@ -425,7 +429,7 @@ function ContributionsCalendar({ username }) {
 
 function GithubStats({ username }) {
   const cardClass =
-    "rounded-xl border border-white/10 bg-[#0f0f0f] p-3 hover:border-white/20 transition-colors";
+    "relative rounded-xl border border-white/10 bg-[#0f0f0f] p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]";
   const imgClass = "w-full h-auto rounded-lg";
 
   return (
@@ -544,8 +548,9 @@ function RepoGrid({ username }) {
           href={r.html_url}
           target="_blank"
           rel="noreferrer"
-          className="group rounded-xl border border-white/10 bg-[#0f0f0f] p-4 hover:border-white/20 transition-colors"
+          className="group relative rounded-xl border border-white/10 bg-[#0f0f0f] p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]"
         >
+          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.08)_0%,rgba(0,239,104,0.0)_60%)] rounded-xl" />
           <div className="flex items-center justify-between">
             <h4 className="text-white font-medium group-hover:underline">
               {r.name}
@@ -846,8 +851,9 @@ function SkillsGrid() {
       {skills.map(({ name, Icon, color }) => (
         <div
           key={name}
-          className="group flex items-center justify-between rounded-xl border border-white/10 bg-[#0f0f0f] px-4 py-3 hover:border-white/20 transition-colors hover:shadow-[0_0_0_1px_rgba(255,255,255,0.06)]"
+          className="group relative flex items-center justify-between rounded-xl border border-white/10 bg-[#0f0f0f] px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]"
         >
+          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.08)_0%,rgba(0,239,104,0.0)_60%)] rounded-xl" />
           <div className="flex items-center gap-3">
             <span
               className="h-6 w-1 rounded-full"
@@ -942,6 +948,12 @@ function App() {
               About
             </a>
             <a
+              href="#experience"
+              className="relative text-gray-300 hover:text-white transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00ef68] after:transition-all hover:after:w-full"
+            >
+              Experience
+            </a>
+            <a
               href="#skills"
               className="relative text-gray-300 hover:text-white transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00ef68] after:transition-all hover:after:w-full"
             >
@@ -1024,7 +1036,8 @@ function App() {
             </div>
             {/* Right: code terminal card (replaces penguin) */}
             <div className="flex items-center justify-center mt-8 md:mt-0">
-              <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg rounded-xl border border-white/10 bg-[#0f0f0f] backdrop-blur p-3 sm:p-5 shadow-2xl animate-[float_6s_ease-in-out_infinite]">
+              <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg rounded-xl border border-white/10 bg-[#0f0f0f] backdrop-blur p-3 sm:p-5 shadow-2xl animate-[float_6s_ease-in-out_infinite] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]">
+                <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.08)_0%,rgba(0,239,104,0.0)_60%)]" />
                 <div className="flex items-center gap-1 mb-3 opacity-70">
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
@@ -1050,6 +1063,104 @@ function App() {
           production‑ready features quickly.
         </p>
       </Section>
+
+      {/* Experience */}
+      <section id="experience" className="py-16 px-6 sm:px-8 md:px-12 lg:px-20" data-section="experience">
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-8 text-white">Experience</h2>
+        {/* Data model inspired by LinkedIn: company, role, dates, location, description bullets, skills */}
+        {(() => {
+          const experience = [
+            {
+              company: "Small Fare™",
+              role: "Full Stack Developer (Intern)",
+              logo: "",
+              location: "Hyderabad, Telangana, India • Remote",
+              dates: "Sep 2025 – Present",
+              bullets: [],
+              skills: [
+                "Full-Stack Development",
+                "MEAN Stack",
+                "Shopify",
+                "Software Design",
+                "Software Industry"
+              ],
+            },
+          ];
+
+          if (experience.length === 0) {
+            return (
+              <div className="max-w-3xl mx-auto rounded-2xl border border-white/10 bg-[#0f0f0f] p-6 sm:p-8 text-center">
+                <p className="text-gray-300">
+                  Your experience will appear here. For now, view my full profile on LinkedIn.
+                </p>
+                <div className="mt-4">
+                  <a
+                    href="https://www.linkedin.com/in/mimohshukla00/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
+                  >
+                    View LinkedIn
+                  </a>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <ol className="relative max-w-4xl mx-auto border-l border-white/10 pl-6 space-y-10">
+              {experience.map((item, idx) => (
+                <li key={idx} className="group relative">
+                  {/* timeline dot */}
+                  <span className="absolute -left-[9px] top-1.5 h-3 w-3 rounded-full bg-[#00ef68] ring-4 ring-black transition-transform duration-300 group-hover:scale-110 group-hover:ring-[#00ef68]/30" />
+
+                  <div className="relative rounded-2xl border border-white/10 bg-[#0f0f0f] p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_40px_rgba(0,239,104,0.15)]">
+                    {/* green glow overlay on hover */}
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.10)_0%,rgba(0,239,104,0.0)_60%)] rounded-2xl" />
+                    <div className="flex items-start gap-4">
+                      {/* Logo or initials */}
+                      <div className="h-12 w-12 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center text-sm font-semibold tracking-tight text-white shrink-0 transition-transform duration-300 motion-safe:group-hover:rotate-3 motion-safe:group-hover:scale-105">
+                        {item.logo ? (
+                          <img src={item.logo} alt={item.company} className="h-full w-full object-cover" loading="lazy" />
+                        ) : (
+                          <span>{(item.company || "").split(" ").map(w => w[0]).join("") || "IN"}</span>
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
+                          <h3 className="text-white font-medium leading-tight">
+                            <span className="relative inline-block after:block after:h-[2px] after:bg-[#00ef68] after:w-0 after:rounded-full after:transition-all after:duration-300 group-hover:after:w-full">
+                              {item.role || "Role"}
+                            </span>
+                          </h3>
+                          <span className="inline-flex items-center gap-2 rounded-full border border-[#00ef68]/30 bg-[#00ef68]/5 px-2.5 py-1 text-xs text-gray-200 whitespace-nowrap">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#00ef68]" />
+                            {(item.dates || "Dates").toLowerCase()}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-300 mt-0.5">{item.company || "Company"}</p>
+                        {(item.location || "").length > 0 && (
+                          <p className="text-xs text-gray-500 mt-0.5">{item.location}</p>
+                        )}
+
+                        {Array.isArray(item.bullets) && item.bullets.length > 0 && (
+                          <ul className="mt-3 list-disc pl-5 space-y-1 text-sm text-gray-300">
+                            {item.bullets.map((b, i) => (
+                              <li key={i}>{b}</li>
+                            ))}
+                          </ul>
+                        )}
+
+                        {/* Skills chips removed per request */}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          );
+        })()}
+      </section>
 
       {/* Skills */}
       <section id="skills" className="py-16 px-6 sm:px-8 md:px-12 lg:px-20">
@@ -1107,7 +1218,7 @@ function App() {
           {projects.map((p) => (
             <article
               key={p.title}
-              className="group relative rounded-2xl border border-white/10 bg-[#0f0f0f] overflow-hidden transition-all duration-300 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.6)] hover:-translate-y-1"
+              className="group relative rounded-2xl border border-white/10 bg-[#0f0f0f] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_12px_50px_rgba(0,239,104,0.15)]"
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-white/5 to-transparent" />
               <div className="relative w-full aspect-[16/9] overflow-hidden rounded-t-2xl bg-[#0c0c0c] ring-1 ring-white/10">
