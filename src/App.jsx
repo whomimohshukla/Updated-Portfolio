@@ -137,6 +137,37 @@ function TerminalCard() {
   );
 }
 
+function ProjectImage({ src, alt }) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  return (
+    <div className="relative w-full aspect-[16/9] overflow-hidden rounded-t-2xl bg-[#0c0c0c] ring-1 ring-white/10">
+      {!loaded && !error && (
+        <div className="absolute inset-0 animate-pulse bg-[linear-gradient(110deg,rgba(255,255,255,0.06)_8%,rgba(255,255,255,0.02)_18%,rgba(255,255,255,0.06)_33%)] bg-[length:200%_100%]" />
+      )}
+      {!error ? (
+        <img
+          src={src}
+          alt={alt}
+          className={`absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 ${
+            loaded ? "opacity-100" : "opacity-0"
+          } group-hover:scale-[1.05]`}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm bg-gradient-to-br from-brownBlack/70 to-black">
+          No preview
+        </div>
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_60%,rgba(0,0,0,0.25)_100%)]" />
+    </div>
+  );
+}
+
 function Logo({ size = 28 }) {
   const px = typeof size === "number" ? `${size}px` : size;
   return (
@@ -166,17 +197,22 @@ function Logo({ size = 28 }) {
   );
 }
 
-function Section({ id, title, children }) {
+function Section({ id, title, children, prefix }) {
   return (
-    <section id={id} className="py-20 px-6 sm:px-8 md:px-12 lg:px-20">
-      <Reveal>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6 text-white">
-          {title}
-        </h2>
-        <div className="text-gray-300 leading-relaxed max-w-3xl">
-          {children}
-        </div>
-      </Reveal>
+    <section id={id} className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
+      <div className="max-w-6xl mx-auto">
+        <Reveal>
+          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-5 text-white inline-flex items-baseline gap-2">
+            {prefix ? (
+              <span className="text-[#00ef68] select-none">{`${prefix}_`}</span>
+            ) : null}
+            <span>{title}</span>
+          </h2>
+          <div className="text-gray-300 leading-relaxed max-w-3xl">
+            {children}
+          </div>
+        </Reveal>
+      </div>
     </section>
   );
 }
@@ -930,9 +966,9 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#0b0b0b] text-[15px] sm:text-[16px]">
       {/* Nav */}
-      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/60 bg-black/50">
+      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-[#0b0b0b]/60 bg-[#0b0b0b]/50">
         <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 sm:px-8 md:px-12 lg:px-20 h-16">
           <a href="#home" className="group inline-flex items-center gap-0">
             <Logo size={26} />
@@ -941,12 +977,6 @@ function App() {
             </span>
           </a>
           <div className="hidden sm:flex items-center gap-8 text-sm">
-            <a
-              href="#about"
-              className="relative text-gray-300 hover:text-white transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00ef68] after:transition-all hover:after:w-full"
-            >
-              About
-            </a>
             <a
               href="#experience"
               className="relative text-gray-300 hover:text-white transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00ef68] after:transition-all hover:after:w-full"
@@ -979,10 +1009,13 @@ function App() {
             </a>
           </div>
           <a
-            href="#contact"
+            href="/RESUME.pdf"
+            target="_blank"
+            rel="noreferrer"
+            download
             className="inline-flex items-center gap-2 rounded-md bg-brownBlack text-white px-4 py-2 text-sm hover:bg-brownBlack/90 border border-white/10 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ef68]/60"
           >
-            Hire Me
+            Resume
           </a>
         </nav>
       </header>
@@ -990,7 +1023,7 @@ function App() {
       {/* Hero */}
       <section
         id="home"
-        className="relative overflow-hidden px-6 sm:px-8 md:px-12 lg:px-20 pt-20 pb-36 md:pb-28 bg-gradient-to-b from-black to-[#0b0b0b]"
+        className="relative overflow-hidden px-6 sm:px-8 md:px-12 lg:px-20 pt-20 pb-36 md:pb-28 bg-gradient-to-b from-[#0b0b0b] to-[#0b0b0b]"
       >
         {/* Animated background blobs (slower, softer) */}
         <div className="pointer-events-none absolute inset-0 -z-10">
@@ -1000,39 +1033,14 @@ function App() {
         </div>
         <div className="max-w-6xl mx-auto animate-[fadeInUp_0.7s_ease-out_both]">
           <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">
-            {/* Left: content */}
+            {/* Left: tux.rs-like intro content */}
             <div className="text-center md:text-left">
-              <p className="inline-flex items-center gap-2 text-xs mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-200">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#00ef68]" />
-                Full‑Stack Developer
+              <p className="text-base italic text-gray-300">hello world 👋</p>
+              <p className="mt-6 text-base sm:text-lg italic text-gray-300 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+                I’m <span className="text-[#00ef68]">Mimoh Shukla</span>, a full stack developer. I enjoy shipping polished
+                user experiences, designing clean APIs, and tuning performance. I work across the stack with React,
+                Node.js, TypeScript, databases, and DevOps tooling to deliver production‑ready features quickly.
               </p>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight text-white">
-                Hi, I’m Mimoh Shukla
-              </h1>
-              {/* Removed typewriter line per request */}
-              <p className="mt-3 sm:mt-4 text-gray-300 text-sm sm:text-base max-w-2xl mx-auto md:mx-0">
-                I design, build, and ship robust web apps end‑to‑end — from
-                fast, accessible React UIs
-                <br className="hidden sm:block" />
-                to secure, scalable APIs and data layers.
-              </p>
-              <div className="mt-6 sm:mt-8 flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4">
-                <a
-                  href="/FSMimohshukla.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                  download
-                  className="rounded-md bg-white text-black px-5 py-3 text-sm font-medium hover:bg-white/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                >
-                  Resume
-                </a>
-                <a
-                  href="#contact"
-                  className="rounded-md bg-brownBlack text-white px-5 py-3 text-sm font-medium border border-white/10 hover:bg-brownBlack/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
-                >
-                  Contact Me
-                </a>
-              </div>
             </div>
             {/* Right: code terminal card (replaces penguin) */}
             <div className="flex items-center justify-center mt-8 md:mt-0">
@@ -1053,21 +1061,17 @@ function App() {
         </div>
       </section>
 
-      {/* About */}
-      <Section id="about" title="About Me">
-        <p>
-          I’m <strong className="text-white">Mimoh Shukla</strong>, a full stack
-          developer. I enjoy shipping polished user experiences, designing clean
-          APIs, and tuning performance. I work across the stack with React,
-          Node.js, TypeScript, databases, and DevOps tooling to deliver
-          production‑ready features quickly.
-        </p>
-      </Section>
+      {/* About section removed (content moved into hero intro) */}
 
       {/* Experience */}
-      <section id="experience" className="py-16 px-6 sm:px-8 md:px-12 lg:px-20" data-section="experience">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-8 text-white">Experience</h2>
-        {/* Data model inspired by LinkedIn: company, role, dates, location, description bullets, skills */}
+      <section id="experience" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20" data-section="experience">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-6 text-white inline-flex items-baseline gap-2">
+            <span className="text-[#00ef68] select-none">1_</span>
+            <span>Experience</span>
+          </h2>
+          {/* Data model inspired by LinkedIn: company, role, dates, location, description bullets, skills */}
+        </div>
         {(() => {
           const experience = [
             {
@@ -1108,7 +1112,7 @@ function App() {
           }
 
           return (
-            <ol className="relative max-w-4xl mx-auto border-l border-white/10 pl-6 space-y-10">
+            <ol className="relative max-w-4xl mx-auto border-l border-white/10 pl-6 space-y-8">
               {experience.map((item, idx) => (
                 <li key={idx} className="group relative">
                   {/* timeline dot */}
@@ -1163,19 +1167,24 @@ function App() {
       </section>
 
       {/* Skills */}
-      <section id="skills" className="py-16 px-6 sm:px-8 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6 text-white">
-          Skills
-        </h2>
-        <SkillsGrid />
+      <section id="skills" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-6 text-white inline-flex items-baseline gap-2">
+            <span className="text-[#00ef68] select-none">2_</span>
+            <span>Skills</span>
+          </h2>
+          <SkillsGrid />
+        </div>
       </section>
 
       {/* GitHub */}
-      <section id="github" className="py-16 px-6 sm:px-8 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3 md:mb-4 text-white">
-          GitHub
-        </h2>
-        <div className="mb-6">
+      <section id="github" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-4 text-white inline-flex items-baseline gap-2">
+            <span className="text-[#00ef68] select-none">3_</span>
+            <span>GitHub</span>
+          </h2>
+          <div className="mb-6">
           <a
             href="https://github.com/whomimohshukla"
             target="_blank"
@@ -1198,47 +1207,34 @@ function App() {
               />
             </svg>
           </a>
-        </div>
-        <GithubStats username="whomimohshukla" />
-        <ContributionsCalendar username="whomimohshukla" />
-        <div className="mt-10">
-          <h3 className="text-xl font-semibold text-white mb-4">
-            Public Repositories
-          </h3>
-          <RepoGrid username="whomimohshukla" />
+          </div>
+          <GithubStats username="whomimohshukla" />
+          <ContributionsCalendar username="whomimohshukla" />
+          <div className="mt-8">
+            <h3 className="text-lg font-medium text-white mb-3 inline-flex items-baseline gap-2">
+              <span className="text-[#00ef68] select-none">3_1</span>
+              <span>Public Repositories</span>
+            </h3>
+            <RepoGrid username="whomimohshukla" />
+          </div>
         </div>
       </section>
 
       {/* Projects */}
-      <section id="projects" className="py-20 px-6 sm:px-8 md:px-12 lg:px-20">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-8 text-white">
-          Projects
-        </h2>
-        <div className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <section id="projects" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-6 text-white inline-flex items-baseline gap-2">
+            <span className="text-[#00ef68] select-none">4_</span>
+            <span>Projects</span>
+          </h2>
+          <div className="grid gap-6 sm:gap-6 lg:gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
             <article
               key={p.title}
               className="group relative rounded-2xl border border-white/10 bg-[#0f0f0f] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_12px_50px_rgba(0,239,104,0.15)]"
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-white/5 to-transparent" />
-              <div className="relative w-full aspect-[16/9] overflow-hidden rounded-t-2xl bg-[#0c0c0c] ring-1 ring-white/10">
-                {p.image ? (
-                  <img
-                    src={p.image}
-                    alt={`${p.title} preview`}
-                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.05]"
-                    loading="lazy"
-                    decoding="async"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm bg-gradient-to-br from-brownBlack/70 to-black">
-                    No preview
-                  </div>
-                )}
-                {/* subtle vignette overlay */}
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_60%,rgba(0,0,0,0.25)_100%)]" />
-              </div>
+              <ProjectImage src={p.image} alt={`${p.title} preview`} />
               <div className="p-6">
                 <h3 className="text-lg font-medium text-white">{p.title}</h3>
                 <p className="mt-2 text-sm text-gray-400">{p.desc}</p>
@@ -1293,11 +1289,12 @@ function App() {
               </div>
             </article>
           ))}
+          </div>
         </div>
       </section>
 
       {/* Contact */}
-      <Section id="contact" title="Get In Touch">
+      <Section id="contact" title="Get In Touch" prefix="5">
         <div className="mx-auto max-w-2xl">
           <div className="rounded-2xl border border-white/10 bg-[#0f0f0f] p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
             <p className="text-center text-gray-300">
@@ -1401,8 +1398,7 @@ function App() {
             </a>
           </div>
           <p className="text-center text-sm text-gray-500">
-            © {new Date().getFullYear()} mimohshukla — Full Stack Developer.
-            Built with React, Vite, and Tailwind.
+            © {new Date().getFullYear()} <span className="text-[#00ef68]">mimohshukla</span> — Full Stack Developer.
           </p>
           <p className="text-center text-sm">
             <a
