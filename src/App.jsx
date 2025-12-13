@@ -20,6 +20,9 @@ import {
   SiVercel,
   SiTailwindcss,
   SiRazorpay,
+    SiApachekafka,
+    SiPrisma,
+    SiNextdotjs,
 } from "react-icons/si";
 import { FiCode, FiStar, FiAlertTriangle } from "react-icons/fi";
 
@@ -867,9 +870,13 @@ function SkillsGrid() {
     { name: "React", Icon: SiReact, color: "#61DAFB" },
     { name: "Node.js", Icon: SiNodedotjs, color: "#5FA04E" },
     { name: "Express", Icon: SiExpress, color: "#FFFFFF" },
+    { name: "Next.js", Icon: SiNextdotjs, color: "#FFFFFF" },
+    { name: "Prisma", Icon: SiPrisma, color: "#2D3748" },
+    { name: "Kafka", Icon: SiApachekafka, color: "#231F20" },
     { name: "Socket.io", Icon: SiSocketdotio, color: "#010101" },
     { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
     { name: "Postgres", Icon: SiPostgresql, color: "#336791" },
+    { name: "Neon DB", Icon: SiPostgresql, color: "#00E599" },
     { name: "Redis", Icon: SiRedis, color: "#DC382D" },
     { name: "BullMQ", Icon: SiRedis, color: "#DC382D" },
     { name: "Docker", Icon: SiDocker, color: "#2496ED" },
