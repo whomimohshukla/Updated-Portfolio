@@ -29,7 +29,21 @@ import {
   SiRailway,
   SiTimescale,
 } from "react-icons/si";
-import { FiCode, FiStar, FiAlertTriangle } from "react-icons/fi";
+import {
+  FiGithub,
+  FiLinkedin,
+  FiMail,
+  FiExternalLink,
+  FiCode,
+  FiChevronRight,
+  FiMapPin,
+  FiCalendar,
+  FiSend,
+  FiCheckCircle,
+  FiAlertCircle,
+  FiStar,
+} from "react-icons/fi";
+import emailjs from "@emailjs/browser";
 
 function TerminalCard() {
   const [input, setInput] = useState("");
@@ -205,15 +219,12 @@ function Logo({ size = 28 }) {
   );
 }
 
-function Section({ id, title, children, prefix }) {
+function Section({ id, title, children }) {
   return (
     <section id={id} className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto">
         <Reveal>
-          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-5 text-white inline-flex items-baseline gap-2">
-            {prefix ? (
-              <span className="text-[#00ef68] select-none">{`${prefix}_`}</span>
-            ) : null}
+          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-5 text-[#00ef68] uppercase">
             <span>{title}</span>
           </h2>
           <div className="text-gray-300 leading-relaxed max-w-3xl">
@@ -472,26 +483,160 @@ function ContributionsCalendar({ username }) {
 }
 
 function GithubStats({ username }) {
+  const [profile, setProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(null);
   const cardClass =
     "relative rounded-xl border border-white/10 bg-[#0f0f0f] p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]";
   const imgClass = "w-full h-auto rounded-lg";
 
+  useEffect(() => {
+    let cancelled = false;
+    const token = import.meta?.env?.VITE_GH_TOKEN;
+    const headers = {
+      Accept: "application/vnd.github+json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
+    async function loadProfile() {
+      try {
+        setProfileLoading(true);
+        setProfileError(null);
+        const res = await fetch(`https://api.github.com/users/${username}`, {
+          headers,
+        });
+        if (!res.ok) {
+          const err = new Error(`GitHub user error: ${res.status}`);
+          err.status = res.status;
+          throw err;
+        }
+        const data = await res.json();
+        if (!cancelled) setProfile(data);
+      } catch (e) {
+        if (!cancelled)
+          setProfileError({
+            status: e.status || 0,
+            message: e.message || "Failed to load GitHub profile",
+          });
+      } finally {
+        if (!cancelled) setProfileLoading(false);
+      }
+    }
+
+    loadProfile();
+    return () => {
+      cancelled = true;
+    };
+  }, [username]);
+
   return (
     <div className="max-w-6xl mx-auto grid gap-4 md:grid-cols-2">
       <Reveal as="div" className={cardClass}>
-        <a
-          href={`https://github.com/${username}`}
-          target="_blank"
-          rel="noreferrer"
-          className="block"
-        >
-          <img
-            className={imgClass}
-            alt="GitHub stats"
-            src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=radical&bg_color=0f0f0f&title_color=ffffff&text_color=c9d1d9&icon_color=58a6ff&hide_border=true`}
-            loading="lazy"
-          />
-        </a>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-xs tracking-[0.12em] text-[#00ef68] uppercase">GitHub overview</p>
+            <a
+              href={`https://github.com/${username}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm font-medium text-white hover:text-[#00ef68] transition-colors"
+            >
+              @{username}
+            </a>
+          </div>
+          <a
+            href={`https://github.com/${username}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center size-8 rounded-full bg-white/5 border border-white/10 text-gray-300 hover:text-black hover:bg-[#00ef68] hover:border-[#00ef68] transition-colors"
+            aria-label="Open GitHub profile"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="size-4"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2c-3.22.7-3.9-1.55-3.9-1.55-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.29-5.27-5.73 0-1.26.45-2.3 1.2-3.11-.12-.3-.52-1.52.11-3.17 0 0 .98-.31 3.2 1.19a11.07 11.07 0 0 1 5.82 0c2.22-1.5 3.2-1.19 3.2-1.19.63 1.65.23 2.87.11 3.17.75.81 1.2 1.85 1.2 3.11 0 4.45-2.71 5.44-5.29 5.72.41.35.77 1.04.77 2.11v3.13c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z"
+              />
+            </svg>
+          </a>
+        </div>
+
+        {profileLoading && (
+          <div className="mt-2 text-xs text-gray-400">Loading GitHub stats…</div>
+        )}
+
+        {!profileLoading && profileError && (
+          <div className="mt-2 text-xs text-gray-400">
+            Could not load live GitHub stats right now.
+          </div>
+        )}
+
+        {!profileLoading && profile && (
+          <div className="mt-3 grid gap-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-center">
+            {/* Circular 4-part overview */}
+            <div className="relative flex items-center justify-center">
+              {/* net/grid background behind circle */}
+              <div className="absolute inset-0 -z-10 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(0,239,104,0.14),transparent_55%),linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[length:auto,18px_18px,18px_18px] opacity-60" />
+              <div className="relative group size-40 sm:size-48 flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-[conic-gradient(#00ef68_0_90deg,#38bdf8_90deg_180deg,#a855f7_180deg_270deg,#f97316_270deg_360deg)] opacity-90 animate-[spin_32s_linear_infinite] group-hover:animate-[spin_18s_linear_infinite]" />
+                <div className="relative size-[72%] rounded-full bg-[#0f0f0f] flex flex-col items-center justify-center border border-white/10 shadow-[0_0_40px_rgba(0,239,104,0.25)]">
+                  <span className="text-[11px] tracking-[0.12em] text-gray-400 uppercase">Public repos</span>
+                  <span className="mt-1 text-2xl font-semibold text-white">
+                    {profile.public_repos?.toLocaleString?.() ?? profile.public_repos ?? "-"}
+                  </span>
+                  <span className="mt-1 text-[11px] text-gray-500">
+                    Followers {profile.followers?.toLocaleString?.() ?? profile.followers ?? "-"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Legend / live numbers */}
+            <div className="space-y-2 text-xs sm:text-sm">
+              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#00ef68]/60 hover:bg-[#00ef68]/5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-[#00ef68]" />
+                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Followers</span>
+                </div>
+                <span className="text-white text-sm font-semibold">
+                  {profile.followers?.toLocaleString?.() ?? profile.followers ?? "-"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#38bdf8]/60 hover:bg-[#38bdf8]/5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-[#38bdf8]" />
+                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Following</span>
+                </div>
+                <span className="text-white text-sm font-semibold">
+                  {profile.following?.toLocaleString?.() ?? profile.following ?? "-"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#a855f7]/60 hover:bg-[#a855f7]/5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-[#a855f7]" />
+                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Public repos</span>
+                </div>
+                <span className="text-white text-sm font-semibold">
+                  {profile.public_repos?.toLocaleString?.() ?? profile.public_repos ?? "-"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#f97316]/60 hover:bg-[#f97316]/5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Public gists</span>
+                </div>
+                <span className="text-white text-sm font-semibold">
+                  {profile.public_gists?.toLocaleString?.() ?? profile.public_gists ?? "-"}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mt-4">
           <LanguagesSummary username={username} />
         </div>
@@ -694,6 +839,7 @@ function LanguagesSummary({ username }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // {status, message}
   const [refreshKey, setRefreshKey] = useState(0);
+  const [noToken, setNoToken] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -707,6 +853,24 @@ function LanguagesSummary({ username }) {
       try {
         setLoading(true);
         setError(null);
+
+        // If there is no token, avoid heavy unauthenticated GitHub calls and
+        // fall back to a static language summary based on known stack.
+        if (!token) {
+          if (!cancelled) {
+            setNoToken(true);
+            setStats([
+              { name: "TypeScript", bytes: 40, pct: 25 },
+              { name: "JavaScript", bytes: 35, pct: 22 },
+              { name: "React", bytes: 30, pct: 19 },
+              { name: "Node.js", bytes: 25, pct: 16 },
+              { name: "HTML", bytes: 15, pct: 9 },
+              { name: "CSS", bytes: 10, pct: 6 },
+            ]);
+            setLoading(false);
+          }
+          return;
+        }
 
         // Fetch public repos (cap pages to limit rate usage)
         const perPage = 100;
@@ -777,11 +941,26 @@ function LanguagesSummary({ username }) {
 
         if (!cancelled) setStats(list);
       } catch (e) {
-        if (!cancelled)
-          setError({
-            status: e.status || 0,
-            message: e.message || String(e),
-          });
+        if (!cancelled) {
+          // If we hit auth/rate limit issues, fall back to static mix
+          if (e && (e.status === 401 || e.status === 403)) {
+            setNoToken(true);
+            setStats([
+              { name: "TypeScript", bytes: 40, pct: 25 },
+              { name: "JavaScript", bytes: 35, pct: 22 },
+              { name: "React", bytes: 30, pct: 19 },
+              { name: "Node.js", bytes: 25, pct: 16 },
+              { name: "HTML", bytes: 15, pct: 9 },
+              { name: "CSS", bytes: 10, pct: 6 },
+            ]);
+            setError(null);
+          } else {
+            setError({
+              status: e.status || 0,
+              message: e.message || String(e),
+            });
+          }
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -804,11 +983,12 @@ function LanguagesSummary({ username }) {
     );
   if (error)
     return (
-      <ErrorCard
-        title="Failed to load languages"
-        status={error.status}
-        onRetry={() => setRefreshKey((k) => k + 1)}
-      />
+      <div className={cardClass}>
+        <h4 className="text-white font-medium mb-2">Languages</h4>
+        <p className="text-sm text-gray-400">
+          Could not load live language stats from GitHub right now.
+        </p>
+      </div>
     );
   if (!stats.length)
     return (
@@ -824,6 +1004,11 @@ function LanguagesSummary({ username }) {
         <h4 className="text-white font-medium">Languages</h4>
         <FiCode className="text-gray-400" />
       </div>
+      {noToken && (
+        <p className="mb-2 text-xs text-gray-500">
+          Showing an approximate language mix (GitHub token not configured).
+        </p>
+      )}
       {/* Stacked bar */}
       <div className="h-3 w-full rounded-full bg-white/5 overflow-hidden flex">
         {stats.map((it) => {
@@ -937,6 +1122,18 @@ function SkillsGrid() {
           </svg>
         </div>
       ))}
+    </div>
+  );
+}
+
+function QuickFixoLogo() {
+  return (
+    <div className="relative size-full flex items-center justify-center bg-gradient-to-br from-[#2D8B94]/20 to-[#FFC107]/20 rounded-lg overflow-hidden group">
+      <div className="relative flex items-center justify-center font-bold tracking-tighter">
+        <span className="text-xl text-[#2D8B94] drop-shadow-[0_0_8px_rgba(45,139,148,0.4)] transition-transform duration-300 group-hover:-translate-x-0.5">Q</span>
+        <span className="text-xl text-[#FFC107] -ml-1 drop-shadow-[0_0_8px_rgba(255,193,7,0.4)] transition-transform duration-300 group-hover:translate-x-0.5">f</span>
+      </div>
+      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#2D8B94] via-[#FFC107] to-[#2D8B94] opacity-50" />
     </div>
   );
 }
@@ -1059,15 +1256,16 @@ function App() {
             <div className="text-center md:text-left">
               <p className="text-base italic text-gray-300">hello world 👋</p>
               <p className="mt-6 text-base sm:text-lg italic text-gray-300 max-w-2xl mx-auto md:mx-0 leading-relaxed">
-                I’m <span className="text-[#00ef68]">Mimoh Shukla</span>, a full stack developer. I enjoy shipping polished
-                user experiences, designing clean APIs, and tuning performance. I work across the stack with React,
-                Node.js, TypeScript, databases, and DevOps tooling to deliver production‑ready features quickly.
+                I’m <span className="text-[#00ef68]">Mimoh Shukla</span>, a full‑stack developer and lead exploring
+                <span className="text-[#00ef68]"> AI &amp; ML</span>. I enjoy shipping polished user experiences, designing clean APIs,
+                and tuning performance. I work across the stack with React, Node.js, TypeScript, modern databases, Redis,
+                Kafka and DevOps tooling to deliver production‑ready, scalable features quickly.
               </p>
             </div>
             {/* Right: code terminal card (replaces penguin) */}
             <div className="flex items-center justify-center mt-8 md:mt-0">
               <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg rounded-xl border border-white/10 bg-[#0f0f0f] backdrop-blur p-3 sm:p-5 shadow-2xl animate-[float_6s_ease-in-out_infinite] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]">
-                <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.08)_0%,rgba(0,239,104,0.0)_60%)]" />
+                <div className="pointer-events-none absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.10)_0%,rgba(0,239,104,0.0)_60%)]" />
                 <div className="flex items-center gap-1 mb-3 opacity-70">
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
@@ -1088,9 +1286,8 @@ function App() {
       {/* Experience */}
       <section id="experience" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20" data-section="experience">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-6 text-white inline-flex items-baseline gap-2">
-            <span className="text-[#00ef68] select-none">1_</span>
-            <span>Experience</span>
+          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-6 text-[#00ef68] uppercase">
+            <span>EXPERIENCE</span>
           </h2>
           {/* Data model inspired by LinkedIn: company, role, dates, location, description bullets, skills */}
         </div>
@@ -1098,14 +1295,15 @@ function App() {
           const experience = [
             {
               company: "Taurgo",
-              role: "Full Stack Developer",
+              role: "Full Stack Developer · Technical Lead",
               logo: "/taurgo_logo.jpeg",
               location: "Cardiff, Wales, United Kingdom • Remote",
               dates: "Jan 2026 – Present",
               bullets: [
-                "Developed and maintained full-stack applications using Vue.js and Nest.js, enhancing user experience and functionality.",
-                "Collaborated with cross-functional teams to implement features and optimize performance, ensuring seamless integration.",
-                "Engaged in code reviews and best practices to maintain high-quality standards in software development.",
+                "Leading end-to-end product development as a full-stack technical lead, owning key areas from architecture to delivery.",
+                "Designing and integrating generative AI features into core workflows, experimenting with modern LLM tooling and AI-first UX.",
+                "Improved system performance and reliability by introducing better caching, background processing and structured logging.",
+                "Driving technical decisions, code reviews and mentoring to maintain high engineering standards across the team.",
               ],
               skills: [
                 "Full-Stack Development",
@@ -1116,26 +1314,45 @@ function App() {
             },
             {
               company: "Small Fare™",
-              role: "Full Stack Developer (Intern) · Team Lead",
+              role: "Full Stack Developer · Technical Lead",
               logo: "/smallfare_logo.jpeg",
               location: "Hyderabad, Telangana, India • Remote",
               dates: "Sep 2025 – Jan 2026",
               bullets: [
-                "Full Stack Developer (Sep 2025 – Jan 2026): Developed and optimized backend APIs, enhancing system reliability and performance.",
-                "Full Stack Developer: Built and maintained major features for the internal dashboard, improving usability for operations teams.",
-                "Full Stack Developer: Integrated TimescaleDB for efficient handling of time-series data in analytics workflows.",
-                "Team Lead (Sep 2025 – Jan 2026): Transitioned from a full stack developer to Team Lead within one month, showcasing rapid adaptability.",
-                "Team Lead: Enhanced leadership skills through effective team collaboration and project discussions.",
+                "Owned full-stack feature work across Node.js, React and Postgres, from API design to polished UI for the internal dashboard.",
+                "Integrated TimescaleDB, Redis and Kafka-based pipelines to handle time-series and event-driven workloads more efficiently.",
+                "Led a small team as Technical Lead, coordinating delivery, doing reviews and unblocking engineers during sprints.",
+                "Experimented with generative AI for internal tooling and developer productivity, including content and automation helpers.",
               ],
               skills: [
                 "Full-Stack Development",
                 "Backend Development",
                 "API Design",
                 "TimescaleDB",
+                "Redis",
+                "Apache Kafka",
                 "Dashboard Development",
                 "Leadership",
                 "Team Collaboration",
                 "Project Coordination",
+              ],
+            },
+            {
+              company: "Quickfixo",
+              role: "Founder & Product Lead",
+              logoComponent: <QuickFixoLogo />,
+              location: "Remote · Part-time Venture",
+              dates: "Dec 2025 – Present",
+              bullets: [
+                "Building a home-service marketplace (MVP) specializing in high-demand services like AC repair, home cleaning, and electrical maintenance.",
+                "Leading a remote team of 15 members across engineering and operations to streamline service delivery and user acquisition.",
+                "Defining product roadmap and market strategy while maintaining a focused portfolio of core essential services.",
+              ],
+              skills: [
+                "Entrepreneurship",
+                "Product Strategy",
+                "Team Leadership",
+                "Marketplace Operations",
               ],
             },
           ];
@@ -1173,7 +1390,9 @@ function App() {
                     <div className="flex items-start gap-4">
                       {/* Logo or initials */}
                       <div className="h-12 w-12 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center text-sm font-semibold tracking-tight text-white shrink-0 transition-transform duration-300 motion-safe:group-hover:rotate-3 motion-safe:group-hover:scale-105">
-                        {item.logo ? (
+                        {item.logoComponent ? (
+                          item.logoComponent
+                        ) : item.logo ? (
                           <img src={item.logo} alt={item.company} className="h-full w-full object-cover" loading="lazy" />
                         ) : (
                           <span>{(item.company || "").split(" ").map(w => w[0]).join("") || "IN"}</span>
@@ -1191,7 +1410,14 @@ function App() {
                             {(item.dates || "Dates").toLowerCase()}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-300 mt-0.5">{item.company || "Company"}</p>
+                        <p className="text-sm text-gray-300 mt-0.5">
+                          {item.company || "Company"}
+                        </p>
+                        {item.company === "Taurgo" && (
+                          <p className="text-xs mt-0.5 text-[#00ef68] font-medium">
+                            Technical lead @ Taurgo
+                          </p>
+                        )}
                         {(item.location || "").length > 0 && (
                           <p className="text-xs text-gray-500 mt-0.5">{item.location}</p>
                         )}
@@ -1218,9 +1444,8 @@ function App() {
       {/* Skills */}
       <section id="skills" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-6 text-white inline-flex items-baseline gap-2">
-            <span className="text-[#00ef68] select-none">2_</span>
-            <span>Skills</span>
+          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-6 text-[#00ef68] uppercase">
+            <span>SKILLS</span>
           </h2>
           <SkillsGrid />
         </div>
@@ -1229,9 +1454,8 @@ function App() {
       {/* GitHub */}
       <section id="github" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-4 text-white inline-flex items-baseline gap-2">
-            <span className="text-[#00ef68] select-none">3_</span>
-            <span>GitHub</span>
+          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-4 text-[#00ef68] uppercase">
+            <span>GITHUB</span>
           </h2>
           <div className="mb-6">
           <a
@@ -1260,9 +1484,8 @@ function App() {
           <GithubStats username="whomimohshukla" />
           <ContributionsCalendar username="whomimohshukla" />
           <div className="mt-8">
-            <h3 className="text-lg font-medium text-white mb-3 inline-flex items-baseline gap-2">
-              <span className="text-[#00ef68] select-none">3_1</span>
-              <span>Public Repositories</span>
+            <h3 className="text-base font-semibold text-[#00ef68] mb-3 tracking-[0.12em] uppercase inline-flex items-baseline gap-2">
+              <span>PUBLIC REPOSITORIES</span>
             </h3>
             <RepoGrid username="whomimohshukla" />
           </div>
@@ -1272,9 +1495,8 @@ function App() {
       {/* Projects */}
       <section id="projects" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-2xl font-medium tracking-tight mb-6 text-white inline-flex items-baseline gap-2">
-            <span className="text-[#00ef68] select-none">4_</span>
-            <span>Projects</span>
+          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-6 text-[#00ef68] uppercase">
+            <span>PROJECTS</span>
           </h2>
           <div className="grid gap-6 sm:gap-6 lg:gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
@@ -1343,45 +1565,99 @@ function App() {
       </section>
 
       {/* Contact */}
-      <Section id="contact" title="Get In Touch" prefix="5">
+      <Section id="contact" title="GET IN TOUCH">
         <div className="mx-auto max-w-2xl">
           <div className="rounded-2xl border border-white/10 bg-[#0f0f0f] p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
             <p className="text-center text-gray-300">
               Have a project in mind or just want to say hi? Drop me a line and
               I’ll get back to you.
             </p>
-            <form className="mt-6 grid gap-4" aria-label="contact form">
-              <input
-                className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
-                placeholder="Your name"
-                name="name"
-                aria-label="Your name"
-                autoComplete="name"
-              />
-              <input
-                className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
-                type="email"
-                placeholder="Email"
-                name="email"
-                aria-label="Email"
-                autoComplete="email"
-              />
-              <textarea
-                className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brownBlack"
-                rows="4"
-                placeholder="Message"
-                name="message"
-                aria-label="Message"
-              />
-              <div className="pt-2 flex justify-center">
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-md bg-brownBlack px-5 py-3 text-sm font-medium text-white border border-white/10 hover:bg-brownBlack/90"
+            {(() => {
+              const formRef = useRef();
+              const [status, setStatus] = useState("idle"); // idle, sending, success, error
+
+              const sendEmail = (e) => {
+                e.preventDefault();
+                setStatus("sending");
+
+                // Note: You will need to replace these with your own EmailJS IDs:
+                // SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY
+                // Sign up at https://www.emailjs.com/
+                emailjs
+                  .sendForm(
+                    "YOUR_SERVICE_ID",
+                    "YOUR_TEMPLATE_ID",
+                    formRef.current,
+                    "YOUR_PUBLIC_KEY"
+                  )
+                  .then(
+                    () => {
+                      setStatus("success");
+                      formRef.current.reset();
+                    },
+                    (error) => {
+                      console.error("EmailJS Error:", error);
+                      setStatus("error");
+                    }
+                  );
+              };
+
+              return (
+                <form
+                  ref={formRef}
+                  onSubmit={sendEmail}
+                  className="mt-6 grid gap-4"
+                  aria-label="contact form"
                 >
-                  Send Message
-                </button>
-              </div>
-            </form>
+                  <input
+                    required
+                    name="user_name"
+                    className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all"
+                    placeholder="Your name"
+                  />
+                  <input
+                    required
+                    type="email"
+                    name="user_email"
+                    className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all"
+                    placeholder="Your email"
+                  />
+                  <textarea
+                    required
+                    name="message"
+                    rows="4"
+                    className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all resize-none"
+                    placeholder="Your message"
+                  ></textarea>
+                  
+                  <button
+                    disabled={status === "sending"}
+                    type="submit"
+                    className="flex items-center justify-center gap-2 rounded-md bg-[#00ef68] px-6 py-3 font-semibold text-black hover:bg-[#00ef68]/90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
+                  >
+                    {status === "sending" ? (
+                      "Sending..."
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <FiSend className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </>
+                    )}
+                  </button>
+
+                  {status === "success" && (
+                    <p className="flex items-center gap-2 text-sm text-[#00ef68] mt-2 animate-fadeIn">
+                      <FiCheckCircle /> Message sent successfully!
+                    </p>
+                  )}
+                  {status === "error" && (
+                    <p className="flex items-center gap-2 text-sm text-red-500 mt-2 animate-fadeIn">
+                      <FiAlertCircle /> Failed to send. Please try again later.
+                    </p>
+                  )}
+                </form>
+              );
+            })()}
           </div>
         </div>
       </Section>
