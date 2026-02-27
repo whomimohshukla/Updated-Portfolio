@@ -41,6 +41,7 @@ import {
   FiSend,
   FiCheckCircle,
   FiAlertCircle,
+  FiAlertTriangle,
   FiStar,
 } from "react-icons/fi";
 import emailjs from "@emailjs/browser";
