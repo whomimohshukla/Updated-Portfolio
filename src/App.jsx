@@ -1151,6 +1151,15 @@ function App() {
     },
 
     {
+      title: "DSA Tracker (Curated Sheet)",
+      desc: "Built a personal DSA tracker to stop losing scattered notes: 300+ curated questions across 13 topics with hints + full approaches, company tags, search/filter, and saved progress.",
+      tech: ["Node.js", "Express", "MongoDB", "JWT", "Render"],
+      github: "https://github.com/whomimohshukla/dsa-Tracker",
+      live: "https://mimohdsasheet.onrender.com/",
+      image: "/dsa-tracker.png",
+    },
+
+    {
       title: "DevSwap",
       desc: "A platform for developers to connect and swap skills/projects with a clean, fast experience.",
       tech: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS"],
@@ -1214,7 +1223,7 @@ function App() {
               className="relative text-gray-300 hover:text-white transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00ef68] after:transition-all hover:after:w-full"
             >
               GitHub
-            </a>z
+            </a>
             <a
               href="#projects"
               className="relative text-gray-300 hover:text-white transition-colors after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[#00ef68] after:transition-all hover:after:w-full"
@@ -1299,7 +1308,7 @@ function App() {
               role: "Full Stack Developer · Technical Lead",
               logo: "/taurgo_logo.jpeg",
               location: "Cardiff, Wales, United Kingdom • Remote",
-              dates: "Jan 2026 – Present",
+              dates: "Mar 2025 – Present",
               bullets: [
                 "Leading end-to-end product development as a full-stack technical lead, owning key areas from architecture to delivery.",
                 "Designing and integrating generative AI features into core workflows, experimenting with modern LLM tooling and AI-first UX.",
@@ -1318,7 +1327,7 @@ function App() {
               role: "Full Stack Developer · Technical Lead",
               logo: "/smallfare_logo.jpeg",
               location: "Hyderabad, Telangana, India • Remote",
-              dates: "Sep 2025 – Jan 2026",
+              dates: "Sep 2024 – Feb 2025",
               bullets: [
                 "Owned full-stack feature work across Node.js, React and Postgres, from API design to polished UI for the internal dashboard.",
                 "Integrated TimescaleDB, Redis and Kafka-based pipelines to handle time-series and event-driven workloads more efficiently.",
