@@ -1308,7 +1308,7 @@ function App() {
               role: "Full Stack Developer · Technical Lead",
               logo: "/taurgo_logo.jpeg",
               location: "Cardiff, Wales, United Kingdom • Remote",
-              dates: "Mar 2025 – Present",
+              dates: "Jan 2026 – Present",
               bullets: [
                 "Leading end-to-end product development as a full-stack technical lead, owning key areas from architecture to delivery.",
                 "Designing and integrating generative AI features into core workflows, experimenting with modern LLM tooling and AI-first UX.",
@@ -1327,7 +1327,7 @@ function App() {
               role: "Full Stack Developer · Technical Lead",
               logo: "/smallfare_logo.jpeg",
               location: "Hyderabad, Telangana, India • Remote",
-              dates: "Sep 2024 – Feb 2025",
+              dates: "Sep 2025 – Jan 2026",
               bullets: [
                 "Owned full-stack feature work across Node.js, React and Postgres, from API design to polished UI for the internal dashboard.",
                 "Integrated TimescaleDB, Redis and Kafka-based pipelines to handle time-series and event-driven workloads more efficiently.",
