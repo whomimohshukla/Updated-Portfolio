@@ -1142,6 +1142,15 @@ function QuickFixoLogo() {
 function App() {
   const projects = [
     {
+      title: "ClaimWise UK",
+      desc: "AI-powered UK benefits & bill savings checker — scans your situation in 60 seconds to find every unclaimed benefit, social tariff, and energy saving you're entitled to. £24B goes unclaimed yearly; average user discovers £2,700/year.",
+      tech: ["Next.js 15", "TypeScript", "Express", "PostgreSQL", "Redis", "Prisma", "Claude AI", "Tailwind CSS"],
+      github: "https://github.com/whomimohshukla/Savvy-UK",
+      live: "https://claimwise-six.vercel.app/",
+      image: "/claimwise.png",
+    },
+
+    {
       title: "Book My Bus",
       desc: "Full‑stack bus ticketing platform with searchable routes, seat selection, authentication, and admin tools.",
       tech: ["React", "Node.js", "Express", "MongoDB", "JWT", "TailwindCSS"],
