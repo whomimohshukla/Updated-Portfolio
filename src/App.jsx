@@ -489,6 +489,109 @@ function ContributionsCalendar({ username }) {
   );
 }
 
+function AnimatedCount({ to, duration = 1000, delay = 0 }) {
+  const [val, setVal] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !to) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); io.disconnect(); } },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to]);
+
+  useEffect(() => {
+    if (!started || !to) return;
+    let frame;
+    const t = setTimeout(() => {
+      const origin = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - origin) / duration, 1);
+        setVal(Math.round((1 - Math.pow(1 - p, 3)) * to));
+        if (p < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    }, delay);
+    return () => { clearTimeout(t); cancelAnimationFrame(frame); };
+  }, [started, to]);
+
+  return <span ref={ref}>{val.toLocaleString()}</span>;
+}
+
+const DONUT_SEGS = [
+  { label: "Followers",    color: "#00ef68", hoverBorder: "hover:border-[#00ef68]/60", hoverBg: "hover:bg-[#00ef68]/5" },
+  { label: "Following",    color: "#38bdf8", hoverBorder: "hover:border-[#38bdf8]/60", hoverBg: "hover:bg-[#38bdf8]/5" },
+  { label: "Public repos", color: "#a855f7", hoverBorder: "hover:border-[#a855f7]/60", hoverBg: "hover:bg-[#a855f7]/5" },
+  { label: "Public gists", color: "#f97316", hoverBorder: "hover:border-[#f97316]/60", hoverBg: "hover:bg-[#f97316]/5" },
+];
+
+function StatsDonut({ reposCount }) {
+  const [go, setGo] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setTimeout(() => setGo(true), 100); io.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const SIZE = 200, CX = 100, CY = 100, R = 74;
+  const C = 2 * Math.PI * R;
+  const ARC = C * 0.215;
+  const GAP_OFFSET = 6;
+
+  return (
+    <div ref={ref} className="relative inline-flex items-center justify-center">
+      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(0,239,104,0.10)_0%,transparent_70%)]" />
+      <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`} className="overflow-visible" aria-hidden="true">
+        {/* Outer pulse ring */}
+        <circle cx={CX} cy={CY} r={R + 17} fill="none" stroke="#00ef68" strokeWidth={1}
+          style={{ opacity: go ? 0.18 : 0, transition: "opacity 1.4s ease 1.1s" }} />
+        {/* Track arcs */}
+        {DONUT_SEGS.map((s, i) => (
+          <circle key={`tr${i}`} cx={CX} cy={CY} r={R} fill="none"
+            stroke="rgba(255,255,255,0.06)" strokeWidth={12}
+            strokeDasharray={`${ARC - 5} ${C}`}
+            style={{ transform: `rotate(${-90 + i * 90 + GAP_OFFSET}deg)`, transformOrigin: "center" }}
+          />
+        ))}
+        {/* Animated arcs */}
+        {DONUT_SEGS.map((s, i) => (
+          <circle key={s.label} cx={CX} cy={CY} r={R} fill="none"
+            stroke={s.color} strokeWidth={12} strokeLinecap="round"
+            strokeDasharray={`${ARC - 8} ${C}`}
+            strokeDashoffset={go ? 0 : ARC}
+            style={{
+              transform: `rotate(${-90 + i * 90 + GAP_OFFSET}deg)`,
+              transformOrigin: "center",
+              transition: `stroke-dashoffset 950ms cubic-bezier(0.34,1.56,0.64,1) ${80 + i * 190}ms`,
+              filter: go ? `drop-shadow(0 0 8px ${s.color}75)` : "none",
+            }}
+          />
+        ))}
+      </svg>
+      {/* Center */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5 pointer-events-none">
+        <span className="text-[10px] tracking-[0.12em] text-gray-500 uppercase leading-none">Public</span>
+        <span className="text-[30px] font-bold text-white leading-none tabular-nums">
+          <AnimatedCount to={reposCount} duration={900} delay={280} />
+        </span>
+        <span className="text-[10px] text-gray-500 leading-none">repos</span>
+      </div>
+    </div>
+  );
+}
+
 function GithubStats({ username }) {
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
@@ -584,63 +687,33 @@ function GithubStats({ username }) {
         )}
 
         {!profileLoading && profile && (
-          <div className="mt-3 grid gap-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-center">
-            {/* Circular 4-part overview */}
-            <div className="relative flex items-center justify-center">
-              {/* net/grid background behind circle */}
-              <div className="absolute inset-0 -z-10 rounded-2xl bg-[radial-gradient(circle_at_center,rgba(0,239,104,0.14),transparent_55%),linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[length:auto,18px_18px,18px_18px] opacity-60" />
-              <div className="relative group size-40 sm:size-48 flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full bg-[conic-gradient(#00ef68_0_90deg,#38bdf8_90deg_180deg,#a855f7_180deg_270deg,#f97316_270deg_360deg)] opacity-90 animate-[spin_32s_linear_infinite] group-hover:animate-[spin_18s_linear_infinite]" />
-                <div className="relative size-[72%] rounded-full bg-[#0f0f0f] flex flex-col items-center justify-center border border-white/10 shadow-[0_0_40px_rgba(0,239,104,0.25)]">
-                  <span className="text-[11px] tracking-[0.12em] text-gray-400 uppercase">Public repos</span>
-                  <span className="mt-1 text-2xl font-semibold text-white">
-                    {profile.public_repos?.toLocaleString?.() ?? profile.public_repos ?? "-"}
-                  </span>
-                  <span className="mt-1 text-[11px] text-gray-500">
-                    Followers {profile.followers?.toLocaleString?.() ?? profile.followers ?? "-"}
-                  </span>
-                </div>
-              </div>
+          <div className="mt-4 grid gap-5 sm:grid-cols-[auto_1fr] items-center">
+            {/* Animated SVG donut */}
+            <div className="flex justify-center">
+              <StatsDonut reposCount={profile.public_repos ?? 0} />
             </div>
 
-            {/* Legend / live numbers */}
-            <div className="space-y-2 text-xs sm:text-sm">
-              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#00ef68]/60 hover:bg-[#00ef68]/5">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-[#00ef68]" />
-                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Followers</span>
+            {/* Animated legend rows */}
+            <div className="space-y-2">
+              {[
+                { label: "Followers",    value: profile.followers,    color: "#00ef68", delay: 200 },
+                { label: "Following",    value: profile.following,    color: "#38bdf8", delay: 320 },
+                { label: "Public repos", value: profile.public_repos, color: "#a855f7", delay: 440 },
+                { label: "Public gists", value: profile.public_gists, color: "#f97316", delay: 560 },
+              ].map((stat) => (
+                <div key={stat.label}
+                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:bg-white/8"
+                  style={{ "--hover-color": stat.color }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: stat.color }} />
+                    <span className="tracking-[0.08em] text-[11px] text-gray-400">{stat.label}</span>
+                  </div>
+                  <span className="text-white text-sm font-semibold tabular-nums">
+                    <AnimatedCount to={stat.value ?? 0} duration={900} delay={stat.delay} />
+                  </span>
                 </div>
-                <span className="text-white text-sm font-semibold">
-                  {profile.followers?.toLocaleString?.() ?? profile.followers ?? "-"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#38bdf8]/60 hover:bg-[#38bdf8]/5">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-[#38bdf8]" />
-                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Following</span>
-                </div>
-                <span className="text-white text-sm font-semibold">
-                  {profile.following?.toLocaleString?.() ?? profile.following ?? "-"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#a855f7]/60 hover:bg-[#a855f7]/5">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-[#a855f7]" />
-                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Public repos</span>
-                </div>
-                <span className="text-white text-sm font-semibold">
-                  {profile.public_repos?.toLocaleString?.() ?? profile.public_repos ?? "-"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3 py-2 transition-all duration-200 hover:border-[#f97316]/60 hover:bg-[#f97316]/5">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-[#f97316]" />
-                  <span className="tracking-[0.08em] text-[11px] text-gray-400">Public gists</span>
-                </div>
-                <span className="text-white text-sm font-semibold">
-                  {profile.public_gists?.toLocaleString?.() ?? profile.public_gists ?? "-"}
-                </span>
-              </div>
+              ))}
             </div>
           </div>
         )}
@@ -861,25 +934,7 @@ function LanguagesSummary({ username }) {
         setLoading(true);
         setError(null);
 
-        // If there is no token or in production environment issues, 
-        // fall back to a realistic language summary based on actual portfolio stack
-        if (!token || (import.meta.env.PROD && !token)) {
-          if (!cancelled) {
-            setNoToken(true);
-            setStats([
-              { name: "JavaScript", bytes: 45, pct: 28 },
-              { name: "TypeScript", bytes: 40, pct: 25 },
-              { name: "React", bytes: 32, pct: 20 },
-              { name: "CSS", bytes: 20, pct: 12 },
-              { name: "HTML", bytes: 15, pct: 9 },
-              { name: "Node.js", bytes: 8, pct: 5 },
-            ]);
-            setLoading(false);
-          }
-          return;
-        }
-
-        // Fetch public repos (cap pages to limit rate usage)
+        // Fetch public repos — always use real API, token increases rate limit
         const perPage = 100;
         let page = 1;
         let repos = [];
@@ -895,13 +950,13 @@ function LanguagesSummary({ username }) {
           repos = repos.concat(batch);
           if (batch.length < perPage) break;
           page += 1;
-          if (page > 2) break; // cap to ~200 repos
+          if (page > 2) break;
         }
 
         // Only consider non-fork, non-archived repos
         const filtered = repos.filter((r) => !r.fork && !r.archived);
-        // Limit languages requests (e.g., most recently pushed 40)
-        const limited = filtered.slice(0, 40);
+        // Without a token the unauthenticated rate limit is 60 req/hr — keep requests low
+        const limited = filtered.slice(0, token ? 40 : 12);
 
         // Fetch languages per repo
         const langMaps = await Promise.all(
