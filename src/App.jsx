@@ -44,7 +44,6 @@ import {
   FiAlertTriangle,
   FiStar,
 } from "react-icons/fi";
-import emailjs from "@emailjs/browser";
 
 function TerminalCard() {
   const [input, setInput] = useState("");
@@ -220,18 +219,25 @@ function Logo({ size = 28 }) {
   );
 }
 
+function SectionTitle({ children }) {
+  return (
+    <Reveal>
+      <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] text-[#00ef68] uppercase">
+        {children}
+      </h2>
+      <div className="mt-2 mb-6 h-[2px] w-10 rounded-full bg-[#00ef68]/50" />
+    </Reveal>
+  );
+}
+
 function Section({ id, title, children }) {
   return (
     <section id={id} className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
       <div className="max-w-6xl mx-auto">
-        <Reveal>
-          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-5 text-[#00ef68] uppercase">
-            <span>{title}</span>
-          </h2>
-          <div className="text-gray-300 leading-relaxed max-w-3xl">
-            {children}
-          </div>
-        </Reveal>
+        <SectionTitle>{title}</SectionTitle>
+        <div className="text-gray-300 leading-relaxed">
+          {children}
+        </div>
       </div>
     </section>
   );
@@ -1139,6 +1145,75 @@ function QuickFixoLogo() {
   );
 }
 
+function ContactForm() {
+  const [fields, setFields] = useState({ name: "", email: "", message: "" });
+  const [sent, setSent] = useState(false);
+
+  const handleChange = (e) =>
+    setFields((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, email, message } = fields;
+    const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\n${message}`
+    );
+    window.open(
+      `mailto:mimohshukl0001@gmail.com?subject=${subject}&body=${body}`,
+      "_blank"
+    );
+    setSent(true);
+    setFields({ name: "", email: "", message: "" });
+  };
+
+  const inputClass =
+    "w-full rounded-md bg-[#0b0b0b] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all";
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-6 grid gap-4" aria-label="contact form">
+      <input
+        required
+        name="name"
+        value={fields.name}
+        onChange={handleChange}
+        className={inputClass}
+        placeholder="Your name"
+      />
+      <input
+        required
+        type="email"
+        name="email"
+        value={fields.email}
+        onChange={handleChange}
+        className={inputClass}
+        placeholder="Your email"
+      />
+      <textarea
+        required
+        name="message"
+        value={fields.message}
+        onChange={handleChange}
+        rows="4"
+        className={`${inputClass} resize-none`}
+        placeholder="Your message"
+      />
+      <button
+        type="submit"
+        className="flex items-center justify-center gap-2 rounded-md bg-[#00ef68] px-6 py-3 font-semibold text-black hover:bg-[#00ef68]/90 transition-all active:scale-[0.98] group"
+      >
+        <span>Send Message</span>
+        <FiSend className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+      </button>
+      {sent && (
+        <p className="flex items-center gap-2 text-sm text-[#00ef68] animate-fadeIn">
+          <FiCheckCircle /> Your email client should open — hit send from there!
+        </p>
+      )}
+    </form>
+  );
+}
+
 function App() {
   const projects = [
     {
@@ -1305,10 +1380,7 @@ function App() {
       {/* Experience */}
       <section id="experience" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20" data-section="experience">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-6 text-[#00ef68] uppercase">
-            <span>EXPERIENCE</span>
-          </h2>
-          {/* Data model inspired by LinkedIn: company, role, dates, location, description bullets, skills */}
+          <SectionTitle>EXPERIENCE</SectionTitle>
         </div>
         {(() => {
           const experience = [
@@ -1463,9 +1535,7 @@ function App() {
       {/* Skills */}
       <section id="skills" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-6 text-[#00ef68] uppercase">
-            <span>SKILLS</span>
-          </h2>
+          <SectionTitle>SKILLS</SectionTitle>
           <SkillsGrid />
         </div>
       </section>
@@ -1473,9 +1543,7 @@ function App() {
       {/* GitHub */}
       <section id="github" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-4 text-[#00ef68] uppercase">
-            <span>GITHUB</span>
-          </h2>
+          <SectionTitle>GITHUB</SectionTitle>
           <div className="mb-6">
           <a
             href="https://github.com/whomimohshukla"
@@ -1514,9 +1582,7 @@ function App() {
       {/* Projects */}
       <section id="projects" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-lg md:text-xl font-semibold tracking-[0.15em] mb-6 text-[#00ef68] uppercase">
-            <span>PROJECTS</span>
-          </h2>
+          <SectionTitle>PROJECTS</SectionTitle>
           <div className="grid gap-6 sm:gap-6 lg:gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
             <article
@@ -1591,92 +1657,7 @@ function App() {
               Have a project in mind or just want to say hi? Drop me a line and
               I’ll get back to you.
             </p>
-            {(() => {
-              const formRef = useRef();
-              const [status, setStatus] = useState("idle"); // idle, sending, success, error
-
-              const sendEmail = (e) => {
-                e.preventDefault();
-                setStatus("sending");
-
-                // Note: You will need to replace these with your own EmailJS IDs:
-                // SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY
-                // Sign up at https://www.emailjs.com/
-                emailjs
-                  .sendForm(
-                    "YOUR_SERVICE_ID",
-                    "YOUR_TEMPLATE_ID",
-                    formRef.current,
-                    "YOUR_PUBLIC_KEY"
-                  )
-                  .then(
-                    () => {
-                      setStatus("success");
-                      formRef.current.reset();
-                    },
-                    (error) => {
-                      console.error("EmailJS Error:", error);
-                      setStatus("error");
-                    }
-                  );
-              };
-
-              return (
-                <form
-                  ref={formRef}
-                  onSubmit={sendEmail}
-                  className="mt-6 grid gap-4"
-                  aria-label="contact form"
-                >
-                  <input
-                    required
-                    name="user_name"
-                    className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all"
-                    placeholder="Your name"
-                  />
-                  <input
-                    required
-                    type="email"
-                    name="user_email"
-                    className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all"
-                    placeholder="Your email"
-                  />
-                  <textarea
-                    required
-                    name="message"
-                    rows="4"
-                    className="w-full rounded-md bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00ef68]/50 transition-all resize-none"
-                    placeholder="Your message"
-                  ></textarea>
-                  
-                  <button
-                    disabled={status === "sending"}
-                    type="submit"
-                    className="flex items-center justify-center gap-2 rounded-md bg-[#00ef68] px-6 py-3 font-semibold text-black hover:bg-[#00ef68]/90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
-                  >
-                    {status === "sending" ? (
-                      "Sending..."
-                    ) : (
-                      <>
-                        <span>Send Message</span>
-                        <FiSend className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      </>
-                    )}
-                  </button>
-
-                  {status === "success" && (
-                    <p className="flex items-center gap-2 text-sm text-[#00ef68] mt-2 animate-fadeIn">
-                      <FiCheckCircle /> Message sent successfully!
-                    </p>
-                  )}
-                  {status === "error" && (
-                    <p className="flex items-center gap-2 text-sm text-red-500 mt-2 animate-fadeIn">
-                      <FiAlertCircle /> Failed to send. Please try again later.
-                    </p>
-                  )}
-                </form>
-              );
-            })()}
+            <ContactForm />
           </div>
         </div>
       </Section>
