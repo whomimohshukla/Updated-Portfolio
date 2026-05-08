@@ -1545,35 +1545,26 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <SectionTitle>GITHUB</SectionTitle>
           <div className="mb-6">
-          <a
-            href="https://github.com/whomimohshukla"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
-            aria-label="Visit Mimoh's GitHub profile"
-            title="Visit GitHub Profile"
-          >
-            <span>View GitHub Profile</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-4"
-              aria-hidden="true"
+            <a
+              href="https://github.com/whomimohshukla"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
+              aria-label="Visit Mimoh's GitHub profile"
             >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2c-3.22.7-3.9-1.55-3.9-1.55-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.29-5.27-5.73 0-1.26.45-2.3 1.2-3.11-.12-.3-.52-1.52.11-3.17 0 0 .98-.31 3.2 1.19a11.07 11.07 0 0 1 5.82 0c2.22-1.5 3.2-1.19 3.2-1.19.63 1.65.23 2.87.11 3.17.75.81 1.2 1.85 1.2 3.11 0 4.45-2.71 5.44-5.29 5.72.41.35.77 1.04.77 2.11v3.13c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z"
-              />
-            </svg>
-          </a>
+              <span>View GitHub Profile</span>
+              <svg viewBox="0 0 24 24" fill="currentColor" className="size-4" aria-hidden="true">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2c-3.22.7-3.9-1.55-3.9-1.55-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.29-5.27-5.73 0-1.26.45-2.3 1.2-3.11-.12-.3-.52-1.52.11-3.17 0 0 .98-.31 3.2 1.19a11.07 11.07 0 0 1 5.82 0c2.22-1.5 3.2-1.19 3.2-1.19.63 1.65.23 2.87.11 3.17.75.81 1.2 1.85 1.2 3.11 0 4.45-2.71 5.44-5.29 5.72.41.35.77 1.04.77 2.11v3.13c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .5Z" />
+              </svg>
+            </a>
           </div>
           <GithubStats username="whomimohshukla" />
           <ContributionsCalendar username="whomimohshukla" />
-          <div className="mt-8">
-            <h3 className="text-base font-semibold text-[#00ef68] mb-3 tracking-[0.12em] uppercase inline-flex items-baseline gap-2">
-              <span>PUBLIC REPOSITORIES</span>
+          <div className="mt-10">
+            <h3 className="text-sm font-semibold tracking-[0.15em] text-[#00ef68] uppercase mb-1">
+              Public Repositories
             </h3>
+            <div className="mb-4 h-[2px] w-8 rounded-full bg-[#00ef68]/50" />
             <RepoGrid username="whomimohshukla" />
           </div>
         </div>
