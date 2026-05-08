@@ -1529,6 +1529,7 @@ function App() {
             </ol>
           );
         })()}
+        </div>
       </section>
 
       {/* Skills */}
