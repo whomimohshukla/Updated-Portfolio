@@ -1381,8 +1381,7 @@ function App() {
       <section id="experience" className="py-16 md:py-20 px-6 sm:px-8 md:px-12 lg:px-20" data-section="experience">
         <div className="max-w-6xl mx-auto">
           <SectionTitle>EXPERIENCE</SectionTitle>
-        </div>
-        {(() => {
+          {(() => {
           const experience = [
             {
               company: "Taurgo",
