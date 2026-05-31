@@ -1377,7 +1377,7 @@ function App() {
             </a>
           </div>
           <a
-            href="/updaedOne.pdf"
+            href="/Mimoh_Shukla_Resume.pdf"
             target="_blank"
             rel="noreferrer"
             download
