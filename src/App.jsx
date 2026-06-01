@@ -1285,7 +1285,7 @@ function App() {
       desc: "Full‑stack bus ticketing platform with searchable routes, seat selection, authentication, and admin tools.",
       tech: ["React", "Node.js", "Express", "MongoDB", "JWT", "TailwindCSS"],
       github: "https://github.com/whomimohshukla/Book-My-Bus",
-      live: "https://book-my-bus-qnm6.vercel.app/",
+      live: "https://bookmybus-services247.vercel.app/",
       image: "/projects/bookmybus.png",
     },
 
