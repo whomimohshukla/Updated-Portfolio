@@ -28,6 +28,12 @@ import {
   SiNestjs,
   SiRailway,
   SiTimescale,
+  SiOpenai,
+  SiClaude,
+  SiGooglegemini,
+  SiLangchain,
+  SiHuggingface,
+  SiOllama,
 } from "react-icons/si";
 import {
   FiGithub,
@@ -36,6 +42,7 @@ import {
   FiExternalLink,
   FiCode,
   FiChevronRight,
+  FiChevronDown,
   FiMapPin,
   FiCalendar,
   FiSend,
@@ -43,6 +50,14 @@ import {
   FiAlertCircle,
   FiAlertTriangle,
   FiStar,
+  FiMenu,
+  FiX,
+  FiCpu,
+  FiDatabase,
+  FiLayers,
+  FiPenTool,
+  FiSliders,
+  FiFileText,
 } from "react-icons/fi";
 
 function TerminalCard() {
@@ -1113,75 +1128,154 @@ function LanguagesSummary({ username }) {
 }
 
 function SkillsGrid() {
-  const skills = [
-    { name: "HTML", Icon: SiHtml5, color: "#E34F26" },
-    { name: "CSS", Icon: SiCss3, color: "#1572B6" },
-    { name: "Tailwind CSS", Icon: SiTailwindcss, color: "#38BDF8" },
-    { name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
-    { name: "TypeScript", Icon: SiTypescript, color: "#3178C6" },
-    { name: "React", Icon: SiReact, color: "#61DAFB" },
-    { name: "React Native", Icon: SiReact, color: "#00D1F2" },
-    { name: "Vue.js", Icon: SiVuedotjs, color: "#41B883" },
-    { name: "Node.js", Icon: SiNodedotjs, color: "#5FA04E" },
-    { name: "Express", Icon: SiExpress, color: "#FFFFFF" },
-    { name: "NestJS", Icon: SiNestjs, color: "#E0234E" },
-    { name: "Next.js", Icon: SiNextdotjs, color: "#FFFFFF" },
-    { name: "Prisma", Icon: SiPrisma, color: "#2D3748" },
-    { name: "Kafka", Icon: SiApachekafka, color: "#231F20" },
-    { name: "Socket.io", Icon: SiSocketdotio, color: "#010101" },
-    { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
-    { name: "Postgres", Icon: SiPostgresql, color: "#336791" },
-    { name: "Neon DB", Icon: SiPostgresql, color: "#00E599" },
-    { name: "TimescaleDB", Icon: SiTimescale, color: "#fdb515" },
-    { name: "Supabase", Icon: SiSupabase, color: "#3ECF8E" },
-    { name: "Redis", Icon: SiRedis, color: "#DC382D" },
-    { name: "BullMQ", Icon: SiRedis, color: "#DC382D" },
-    { name: "Docker", Icon: SiDocker, color: "#2496ED" },
-    // Using Docker icon as a generic infra symbol for AWS and EC2 since this react-icons version
-    // does not export dedicated AWS/EC2 simple-icons.
-    { name: "AWS", Icon: SiDocker, color: "#FF9900" },
-    { name: "EC2", Icon: SiDocker, color: "#FF9900" },
-    { name: "Railway", Icon: SiRailway, color: "#0B0D0E" },
-    { name: "Nginx", Icon: SiNginx, color: "#009639" },
-    { name: "Razorpay", Icon: SiRazorpay, color: "#0C2E8A" },
-    { name: "Git", Icon: SiGit, color: "#F05032" },
-    { name: "GitHub", Icon: SiGithub, color: "#FFFFFF" },
-    { name: "C++", Icon: SiCplusplus, color: "#00599C" },
-    { name: "Ubuntu", Icon: SiUbuntu, color: "#E95420" },
-    { name: "Vercel", Icon: SiVercel, color: "#FFFFFF" },
+  const categories = [
+    {
+      title: "Generative AI",
+      blurb: "LLM applications, agents & AI pipelines",
+      accent: "#a855f7",
+      skills: [
+        { name: "Claude AI", Icon: SiClaude, color: "#D97757" },
+        { name: "OpenAI", Icon: SiOpenai, color: "#2aa889" },
+        { name: "Gemini API", Icon: SiGooglegemini, color: "#4285F4" },
+        { name: "LangChain", Icon: SiLangchain, color: "#7a9e5e" },
+        { name: "AI Agents", Icon: FiCpu, color: "#a855f7" },
+        { name: "Prompt Engineering", Icon: FiPenTool, color: "#a855f7" },
+        { name: "RAG Pipelines", Icon: FiLayers, color: "#a855f7" },
+        { name: "Vector Databases", Icon: FiDatabase, color: "#a855f7" },
+        { name: "Vision Models", Icon: FiFileText, color: "#a855f7" },
+        { name: "Fine-tuning", Icon: FiSliders, color: "#a855f7" },
+        { name: "Hugging Face", Icon: SiHuggingface, color: "#FFD21E" },
+        { name: "Ollama", Icon: SiOllama, color: "#FFFFFF" },
+      ],
+    },
+    {
+      title: "Frontend",
+      blurb: "Modern, responsive UI building",
+      accent: "#61DAFB",
+      skills: [
+        { name: "HTML", Icon: SiHtml5, color: "#E34F26" },
+        { name: "CSS", Icon: SiCss3, color: "#1572B6" },
+        { name: "Tailwind CSS", Icon: SiTailwindcss, color: "#38BDF8" },
+        { name: "JavaScript", Icon: SiJavascript, color: "#F7DF1E" },
+        { name: "TypeScript", Icon: SiTypescript, color: "#3178C6" },
+        { name: "React", Icon: SiReact, color: "#61DAFB" },
+        { name: "React Native", Icon: SiReact, color: "#00D1F2" },
+        { name: "Vue.js", Icon: SiVuedotjs, color: "#41B883" },
+        { name: "Next.js", Icon: SiNextdotjs, color: "#FFFFFF" },
+      ],
+    },
+    {
+      title: "Backend & APIs",
+      blurb: "Scalable services, realtime & event-driven",
+      accent: "#E0234E",
+      skills: [
+        { name: "Node.js", Icon: SiNodedotjs, color: "#5FA04E" },
+        { name: "Express", Icon: SiExpress, color: "#FFFFFF" },
+        { name: "NestJS", Icon: SiNestjs, color: "#E0234E" },
+        { name: "Prisma", Icon: SiPrisma, color: "#2D3748" },
+        { name: "Kafka", Icon: SiApachekafka, color: "#DAB55A" },
+        { name: "Socket.io", Icon: SiSocketdotio, color: "#FFFFFF" },
+      ],
+    },
+    {
+      title: "Databases & Caching",
+      blurb: "SQL, NoSQL, time-series & fast caching",
+      accent: "#47A248",
+      skills: [
+        { name: "MongoDB", Icon: SiMongodb, color: "#47A248" },
+        { name: "Postgres", Icon: SiPostgresql, color: "#336791" },
+        { name: "Neon DB", Icon: SiPostgresql, color: "#00E599" },
+        { name: "TimescaleDB", Icon: SiTimescale, color: "#fdb515" },
+        { name: "Supabase", Icon: SiSupabase, color: "#3ECF8E" },
+        { name: "Redis", Icon: SiRedis, color: "#DC382D" },
+        { name: "BullMQ", Icon: SiRedis, color: "#DC382D" },
+      ],
+    },
+    {
+      title: "Cloud & DevOps",
+      blurb: "Deploy, scale and run in production",
+      accent: "#2496ED",
+      skills: [
+        { name: "Docker", Icon: SiDocker, color: "#2496ED" },
+        // Using Docker icon as a generic infra symbol for AWS and EC2 since this react-icons version
+        // does not export dedicated AWS/EC2 simple-icons.
+        { name: "AWS", Icon: SiDocker, color: "#FF9900" },
+        { name: "EC2", Icon: SiDocker, color: "#FF9900" },
+        { name: "Railway", Icon: SiRailway, color: "#9CA3AF" },
+        { name: "Nginx", Icon: SiNginx, color: "#009639" },
+        { name: "Ubuntu", Icon: SiUbuntu, color: "#E95420" },
+        { name: "Vercel", Icon: SiVercel, color: "#FFFFFF" },
+      ],
+    },
+    {
+      title: "Tools & Languages",
+      blurb: "Everyday tooling and fundamentals",
+      accent: "#F05032",
+      skills: [
+        { name: "Razorpay", Icon: SiRazorpay, color: "#0C2E8A" },
+        { name: "Git", Icon: SiGit, color: "#F05032" },
+        { name: "GitHub", Icon: SiGithub, color: "#FFFFFF" },
+        { name: "C++", Icon: SiCplusplus, color: "#00599C" },
+      ],
+    },
   ];
 
   return (
-    <div className="max-w-6xl mx-auto grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {skills.map(({ name, Icon, color }) => (
+    <div className="max-w-6xl mx-auto grid gap-6">
+      {categories.map((cat) => (
         <div
-          key={name}
-          className="group relative flex items-center justify-between rounded-xl border border-white/10 bg-[#0f0f0f] px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:ring-1 hover:ring-[#00ef68]/40 hover:shadow-[0_10px_30px_rgba(0,239,104,0.12)]"
+          key={cat.title}
+          className="group/cat rounded-2xl border border-white/10 bg-[#0f0f0f] p-5 sm:p-6 transition-all duration-300 hover:border-white/20"
         >
-          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_top_left,rgba(0,239,104,0.08)_0%,rgba(0,239,104,0.0)_60%)] rounded-xl" />
-          <div className="flex items-center gap-3">
-            <span
-              className="h-6 w-1 rounded-full"
-              style={{ backgroundColor: color }}
-            />
-            <Icon className="shrink-0" size={18} style={{ color }} />
-            <span className="text-gray-200">{name}</span>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <span
+                className="h-2.5 w-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: cat.accent }}
+              />
+              <h3 className="text-white font-medium tracking-wide">
+                {cat.title}
+              </h3>
+              {cat.blurb && (
+                <p className="hidden md:block text-xs text-gray-500 truncate">
+                  · {cat.blurb}
+                </p>
+              )}
+            </div>
+            <span className="shrink-0 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[11px] text-gray-400">
+              {cat.skills.length} skills
+            </span>
           </div>
-          <svg
-            className="size-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M5 12h14M13 5l7 7-7 7"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            {cat.skills.map(({ name, Icon, color }) => (
+              <div
+                key={name}
+                className="group flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#00ef68]/30 hover:bg-white/[0.06] hover:ring-1 hover:ring-[#00ef68]/40"
+              >
+                <span
+                  className="h-[18px] w-[3px] rounded-full shrink-0"
+                  style={{ backgroundColor: color }}
+                />
+                <Icon className="shrink-0" size={16} style={{ color }} />
+                <span className="text-sm text-gray-200 truncate">{name}</span>
+                <svg
+                  className="ml-auto size-3.5 shrink-0 text-gray-500 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-[#00ef68]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 12h14M13 5l7 7-7 7"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </div>
@@ -1270,6 +1364,7 @@ function ContactForm() {
 }
 
 function App() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const projects = [
     {
       title: "ClaimWise UK",
@@ -1301,7 +1396,7 @@ function App() {
     {
       title: "DevSwap",
       desc: "A platform for developers to connect and swap skills/projects with a clean, fast experience.",
-      tech: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS"],
+      tech: ["React", "Node.js", "Express", "MongoDB", "Socket.io", "Redis", "Gemini API"],
       github: "https://github.com/whomimohshukla/devSwap.live",
       live: "https://dev-swap-live.vercel.app/",
       image: "/projects/devswap.png",
@@ -1376,16 +1471,49 @@ function App() {
               Contact
             </a>
           </div>
-          <a
-            href="/Mimoh_Shukla_Resume.pdf"
-            target="_blank"
-            rel="noreferrer"
-            download
-            className="inline-flex items-center gap-2 rounded-md bg-brownBlack text-white px-4 py-2 text-sm hover:bg-brownBlack/90 border border-white/10 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ef68]/60"
-          >
-            Resume
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setMobileOpen((o) => !o)}
+              className="sm:hidden inline-flex items-center justify-center size-9 rounded-md border border-white/10 bg-white/5 text-gray-200 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <FiX className="size-5" /> : <FiMenu className="size-5" />}
+            </button>
+            <a
+              href="/mimoh_shukla.pdf"
+              target="_blank"
+              rel="noreferrer"
+              download
+              className="inline-flex items-center gap-2 rounded-md bg-brownBlack text-white px-4 py-2 text-sm hover:bg-brownBlack/90 border border-white/10 transition duration-200 will-change-transform shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ef68]/60"
+            >
+              Resume
+            </a>
+          </div>
         </nav>
+        {mobileOpen && (
+          <div className="sm:hidden border-t border-white/10 bg-[#0b0b0b]/95 backdrop-blur animate-fadeIn">
+            <nav className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
+              {[
+                ["experience", "Experience"],
+                ["skills", "Skills"],
+                ["github", "GitHub"],
+                ["projects", "Projects"],
+                ["contact", "Contact"],
+              ].map(([id, label]) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-md px-3 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 hover:pl-4 transition-all"
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero */}
@@ -1440,33 +1568,33 @@ function App() {
           const experience = [
             {
               company: "Taurgo",
-              role: "Full Stack Developer · Technical Lead",
+              role: "Full Stack Engineer",
               logo: "/taurgo_logo.jpeg",
               location: "Cardiff, Wales, United Kingdom • Remote",
               dates: "Jan 2026 – Present",
               bullets: [
-                "Leading end-to-end product development as a full-stack technical lead, owning key areas from architecture to delivery.",
-                "Designing and integrating generative AI features into core workflows, experimenting with modern LLM tooling and AI-first UX.",
-                "Improved system performance and reliability by introducing better caching, background processing and structured logging.",
-                "Driving technical decisions, code reviews and mentoring to maintain high engineering standards across the team.",
+                "Owned DevOps end-to-end: containerized services with Docker, shipped the frontend on Vercel with a CDN, and migrated infrastructure from Hostinger to AWS EC2 with Nginx load balancing, SSL/TLS, and PM2 — cutting hosting costs while achieving 99.9% uptime.",
+                "Built backend features including a notification system and event-driven APIs; added Redis caching and optimized PostgreSQL schemas with targeted indexing — reducing DB load by 40% under peak traffic.",
+                "Developed a Generative AI reporting pipeline using Gemini and OpenAI APIs for image analysis and prompt-based report generation, and improved Puppeteer PDF generation — cutting manual reporting time by 70%.",
+                "Participated in code reviews and architecture discussions with senior engineers, resolving security issues and correcting system flow — maintaining zero critical bugs in production.",
               ],
               skills: [
                 "Full-Stack Development",
-                "Vue.js",
-                "NestJS",
+                "Generative AI",
+                "AWS EC2",
                 "Code Reviews",
               ],
             },
             {
               company: "Small Fare™",
-              role: "Full Stack Developer · Technical Lead",
+              role: "Full Stack Engineer Intern",
               logo: "/smallfare_logo.jpeg",
               location: "Hyderabad, Telangana, India • Remote",
-              dates: "Sep 2025 – Jan 2026",
+              dates: "Sep 2025 – Dec 2025",
               bullets: [
-                "Owned full-stack feature work across Node.js, React and Postgres, from API design to polished UI for the internal dashboard.",
-                "Integrated TimescaleDB, Redis and Kafka-based pipelines to handle time-series and event-driven workloads more efficiently.",
-                "Led a small team as Technical Lead, coordinating delivery, doing reviews and unblocking engineers during sprints.",
+                "Integrated the organizer dashboard and onboarding flow for EFOrganize, a live ticketing SaaS; fixed and improved the existing Prisma schema implementation.",
+                "Implemented authentication and authorization flows and integrated Cashfree for document verification.",
+                "Added Redis TTL caching, traffic-throttling policies, and TimescaleDB for time-series analytics; automated deployments with GitHub Actions CI/CD.",
                 "Experimented with generative AI for internal tooling and developer productivity, including content and automation helpers.",
               ],
               skills: [
@@ -1475,9 +1603,8 @@ function App() {
                 "API Design",
                 "TimescaleDB",
                 "Redis",
-                "Apache Kafka",
-                "Dashboard Development",
-                "Leadership",
+                "GitHub Actions",
+                "Authentication & Authorization",
                 "Team Collaboration",
                 "Project Coordination",
               ],
@@ -1558,11 +1685,6 @@ function App() {
                         <p className="text-sm text-gray-300 mt-0.5">
                           {item.company || "Company"}
                         </p>
-                        {item.company === "Taurgo" && (
-                          <p className="text-xs mt-0.5 text-[#00ef68] font-medium">
-                            Technical lead @ Taurgo
-                          </p>
-                        )}
                         {(item.location || "").length > 0 && (
                           <p className="text-xs text-gray-500 mt-0.5">{item.location}</p>
                         )}
