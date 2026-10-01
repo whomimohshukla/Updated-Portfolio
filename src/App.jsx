@@ -308,6 +308,17 @@ function Skills() {
  * ------------------------------------------------------------------ */
 const PROJECTS = [
   {
+    title: "JestBest",
+    kind: "AI",
+    target: "TARGET: PRODUCTION",
+    status: "LIVE",
+    image: "/projects/jestbest.png",
+    body: "AI-powered QA SaaS that autonomously explores web apps, generates test cases, runs them in a real browser and analyses the failures to surface bugs. TypeScript and Express 5 backend on Prisma and PostgreSQL, with BullMQ and Redis queueing the Playwright browser jobs. JWT auth with TOTP 2FA, S3 artefact storage and Docker for deployment.",
+    tags: ["TypeScript", "Playwright", "Express.js", "PostgreSQL", "BullMQ", "Docker"],
+    href: "https://veribot-nine.vercel.app",
+    repo: "https://github.com/whomimohshukla/JestBest",
+  },
+  {
     title: "ClaimWise UK",
     kind: "AI",
     target: "TARGET: PRODUCTION",
