@@ -1,57 +1,139 @@
 @import "tailwindcss";
 
-/* Custom keyframes for animations */
-@keyframes fadeIn {
-  from { opacity: 0 }
-  to { opacity: 1 }
+/* ------------------------------------------------------------------ *
+ * Theme — tux.rs palette. `white` is remapped to an off-white, exactly
+ * as tux.rs does, and the accent is pure white.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-white: #e1e1e1;
+  --color-accent: #ffffff;
+  --color-dark: #111111;
+  --color-rail: #727578;
+  --color-ink: #e1e1e1;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(8px) }
-  to { opacity: 1; transform: translateY(0) }
-}
-
-/* Global tweaks */
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
 html {
-  scroll-behavior: smooth;
+  background-color: #111111;
+  color: #e1e1e1;
+  font-family: Consolas, Menlo, "Roboto Mono", monospace;
+  font-size: 14px;
 }
 
-/* Subtle organic blob motion for hero background */
-@keyframes blob {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
+body {
+  background-color: #111111;
+  color: #e1e1e1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #ffffff;
+  color: #111111;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.32);
+}
+
+/* ------------------------------------------------------------------ *
+ * Synthwave grid backdrop
+ * ------------------------------------------------------------------ */
+.synthwave .grid {
+  z-index: -2;
+  perspective: 308px;
+  width: 100%;
+  height: 400px;
+  position: fixed;
+  bottom: 0;
+}
+.synthwave .grid-fade {
+  background: radial-gradient(rgba(1, 0, 2, 0) 0, #111 70%);
+  height: 100%;
+}
+.synthwave .grid-lines {
+  filter: blur(2px);
+  width: 100%;
+  height: 200%;
+  transform-origin: 100% 0 0;
+  background-image: linear-gradient(90deg, #ffffff38 1px, transparent 0),
+    linear-gradient(#ffffff38 1px, transparent 0);
+  background-repeat: repeat;
+  background-size: 45px 30px;
+  animation: 10s linear infinite s-grid-animation;
+}
+@keyframes s-grid-animation {
+  0% {
+    transform: rotateX(45deg) translateY(-390px);
   }
-  33% {
-    transform: translate(20px, -30px) scale(1.05);
-  }
-  66% {
-    transform: translate(-25px, 15px) scale(0.98);
+  to {
+    transform: rotateX(45deg) translateY(0);
   }
 }
 
-/* Gentle vertical float */
-@keyframes float {
-  0%, 100% { transform: translateY(0) }
-  50% { transform: translateY(-6px) }
+/* ------------------------------------------------------------------ *
+ * Experience timeline — rail + square markers
+ * ------------------------------------------------------------------ */
+.terminal-timeline {
+  position: relative;
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.terminal-timeline::before {
+  content: " ";
+  z-index: 400;
+  background: #727578;
+  width: 2px;
+  height: 100%;
+  top: 0;
+  display: inline-block;
+  position: absolute;
+  left: 7px;
+}
+.terminal-timeline > div::before {
+  content: " ";
+  z-index: 400;
+  background: #fff;
+  border: 2px solid #727578;
+  width: 15px;
+  height: 15px;
+  margin-top: 25px;
+  display: inline-block;
+  position: absolute;
+  left: 0;
 }
 
-/* Respect user reduced motion preference */
+/* ------------------------------------------------------------------ *
+ * Motion preferences
+ * ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
-}
-
-/* Blinking caret for typewriter */
-@keyframes caret {
-  0%, 49% { opacity: 1 }
-  50%, 100% { opacity: 0 }
-}
-
-/* Typewriter reveal */
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
 }
