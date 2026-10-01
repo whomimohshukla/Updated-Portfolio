@@ -65,18 +65,24 @@ body {
   height: 400px;
   position: fixed;
   bottom: 0;
+  /* tux.rs clips the rotated plane here. Without this the grid escapes the
+     viewport and only shows at the left/right edges on narrow screens. */
+  overflow: hidden;
+  pointer-events: none;
 }
 .synthwave .grid-fade {
   background: radial-gradient(rgba(1, 0, 2, 0) 0, #111 70%);
+  width: 100%;
   height: 100%;
+  position: absolute;
 }
 .synthwave .grid-lines {
   filter: blur(2px);
   width: 100%;
   height: 200%;
   transform-origin: 100% 0 0;
-  background-image: linear-gradient(90deg, #ffffff38 1px, transparent 0),
-    linear-gradient(#ffffff38 1px, transparent 0);
+  background-image: linear-gradient(90deg, #ffffff4d 1px, transparent 0),
+    linear-gradient(#ffffff4d 1px, transparent 0);
   background-repeat: repeat;
   background-size: 45px 30px;
   animation: 10s linear infinite s-grid-animation;
@@ -88,6 +94,22 @@ body {
   to {
     transform: rotateX(45deg) translateY(0);
   }
+}
+
+/* Company logos: greyscale at rest, full colour on hover. */
+.logo-glyph {
+  opacity: 0.45;
+  filter: grayscale(1);
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.group\/logo:hover .logo-glyph,
+.group\/logo:hover > * .logo-glyph {
+  opacity: 1;
+  filter: grayscale(0);
+  transform: scale(1.1);
 }
 
 /* ------------------------------------------------------------------ *

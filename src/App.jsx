@@ -30,6 +30,16 @@ import {
   SiGmail,
   SiGithub,
   SiDiscord,
+  SiLinkedin,
+  SiPython,
+  SiGnubash,
+  SiGit,
+  SiUbuntu,
+  SiLinux,
+  SiVite,
+  SiGraphql,
+  SiDgraph,
+  SiLangchain,
 } from "react-icons/si";
 import {
   FiServer,
@@ -37,6 +47,10 @@ import {
   FiLock,
   FiKey,
   FiActivity,
+  FiDatabase,
+  FiZap,
+  FiCode,
+  FiMousePointer,
   FiRadio,
   FiGitBranch,
   FiTerminal,
@@ -45,13 +59,13 @@ import {
   FiStar,
   FiGitCommit,
   FiAlertTriangle,
-  FiGlobe,
 } from "react-icons/fi";
 
 const GITHUB_USER = "whomimohshukla";
 const EMAIL = "mimohshukla0001@gmail.com";
 /* TODO: replace with your own Discord invite or profile link. */
-const DISCORD = "https://discord.gg/your-handle";
+const LINKEDIN = "https://www.linkedin.com/in/mimohshukla00";
+const DISCORD = "reboot_life";
 const GH_TOKEN = import.meta.env.VITE_GH_TOKEN;
 
 /* Green is reserved for hover states inside the GitHub section only. */
@@ -110,17 +124,17 @@ function HelloWorld() {
         <div className="mt-5 flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-6">
           <a
             href={`mailto:${EMAIL}`}
-            className="text-accent before:content-['-'] transition-colors hover:text-white"
+            className="inline-block py-0.5 text-accent before:content-['-'] transition-colors hover:text-white max-sm:py-2"
           >
             {EMAIL}
           </a>
           <a
-            href={DISCORD}
+            href={LINKEDIN}
             target="_blank"
             rel="noreferrer"
-            className="text-accent before:content-['-'] transition-colors hover:text-white"
+            className="inline-block py-0.5 text-accent before:content-['-'] transition-colors hover:text-white max-sm:py-2"
           >
-            discord
+            linkedin
           </a>
         </div>
       </section>
@@ -131,16 +145,94 @@ function HelloWorld() {
 /* ------------------------------------------------------------------ *
  * 1. _skills
  * ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------ *
+ * Skill glyph — plain monochrome, accent on hover (as before)
+ * ------------------------------------------------------------------ */
+/* Real brand colours, held in a static map so nothing ships the whole
+   simple-icons catalogue. Hues were lifted to a minimum lightness so
+   near-black brands (Prisma, Vercel, WebRTC) stay readable on the tile. */
+const SKILL_COLORS = {
+  "React": "#61DAFB",
+  "Next.js": "#FFFFFF",
+  "TypeScript": "#3178C6",
+  "TailwindCSS": "#06c0df",
+  "JavaScript": "#F7DF1E",
+  "Python": "#3878ae",
+  "HTML5": "#E34F26",
+  "CSS3": "#7339ac",
+  "Node.js": "#5FA04E",
+  "Express.js": "#E5E7EB",
+  "Socket.io": "#E5E7EB",
+  "GraphQL": "#e6009b",
+  "REST APIs": "#12d393",
+  "Microservices": "#0EA5E9",
+  "Event-Driven": "#9b4b5f",
+  "Authentication": "#E11D48",
+  "Authorization": "#7C3AED",
+  "Rate Limiting": "#F59E0B",
+  "PostgreSQL": "#4169E1",
+  "MongoDB": "#47A248",
+  "Redis": "#FF4438",
+  "Prisma": "#7C9CBF",
+  "TimescaleDB": "#FDB515",
+  "Supabase": "#3FCF8E",
+  "Neon DB": "#00e699",
+  "AWS EC2": "#FF9900",
+  "Docker": "#2496ED",
+  "Nginx": "#00e657",
+  "CI/CD": "#2088FF",
+  "GitHub Actions": "#2088FF",
+  "PM2": "#4f06e0",
+  "SSL/TLS": "#22C55E",
+  "Vercel": "#FFFFFF",
+  "Vite": "#9135FF",
+  "WebSockets": "#17cfbb",
+  "WebRTC": "#D1D5DB",
+  "Claude AI": "#D97757",
+  "Gemini API": "#8E75B2",
+  "OpenAI API": "#5033b3",
+  "LLM Apps": "#8B5CF6",
+  "LangChain": "#7FC8FF",
+  "LangGraph": "#22C55E",
+  "RAG": "#6366F1",
+  "Agentic Workflows": "#D946EF",
+  "OpenCode": "#2DD4BF",
+  "Codex": "#5033b3",
+  "Cursor": "#C084FC",
+  "VS Code": "#0089e6",
+  "Claude Code": "#D97757",
+  "Git": "#F03C2E",
+  "Bash": "#56bc29",
+  "Ubuntu": "#E95420",
+  "Linux": "#FCC624",
+};
+
+function SkillGlyph({ skill }) {
+  const Glyph = skill.Icon;
+  if (!Glyph) return null;
+  return (
+    <Glyph
+      size={16}
+      strokeWidth={2.5}
+      style={{ color: SKILL_COLORS[skill.name] ?? "#E1E1E1" }}
+      className="shrink-0"
+    />
+  );
+}
+
 const SKILLS = [
-  { name: "React.js", Icon: SiReact },
+  { name: "React", Icon: SiReact },
   { name: "Next.js", Icon: SiNextdotjs },
   { name: "TypeScript", Icon: SiTypescript },
-  { name: "Tailwind CSS", Icon: SiTailwindcss },
+  { name: "TailwindCSS", Icon: SiTailwindcss },
   { name: "JavaScript", Icon: SiJavascript },
+  { name: "Python", Icon: SiPython },
   { name: "HTML5", Icon: SiHtml5 },
   { name: "CSS3", Icon: SiCss3 },
   { name: "Node.js", Icon: SiNodedotjs },
   { name: "Express.js", Icon: SiExpress },
+  { name: "Socket.io", Icon: SiSocketdotio },
+  { name: "GraphQL", Icon: SiGraphql },
   { name: "REST APIs", Icon: FiServer },
   { name: "Microservices", Icon: FiGrid },
   { name: "Event-Driven", Icon: SiApachekafka },
@@ -162,13 +254,26 @@ const SKILLS = [
   { name: "PM2", Icon: FiTerminal },
   { name: "SSL/TLS", Icon: FiShield },
   { name: "Vercel", Icon: SiVercel },
-  { name: "Socket.io", Icon: SiSocketdotio },
+  { name: "Vite", Icon: SiVite },
   { name: "WebSockets", Icon: FiRadio },
   { name: "WebRTC", Icon: SiWebrtc },
   { name: "Claude AI", Icon: SiClaude },
   { name: "Gemini API", Icon: SiGooglegemini },
   { name: "OpenAI API", Icon: SiOpenai },
   { name: "LLM Apps", Icon: FiCpu },
+  { name: "LangChain", Icon: SiLangchain },
+  { name: "LangGraph", Icon: SiDgraph },
+  { name: "RAG", Icon: FiDatabase },
+  { name: "Agentic Workflows", Icon: FiZap },
+  { name: "OpenCode", Icon: FiTerminal },
+  { name: "Codex", Icon: SiOpenai },
+  { name: "Cursor", Icon: FiMousePointer },
+  { name: "VS Code", Icon: FiCode },
+  { name: "Claude Code", Icon: SiClaude },
+  { name: "Git", Icon: SiGit },
+  { name: "Bash", Icon: SiGnubash },
+  { name: "Ubuntu", Icon: SiUbuntu },
+  { name: "Linux", Icon: SiLinux },
 ];
 
 function Skills() {
@@ -179,16 +284,15 @@ function Skills() {
       </SectionLabel>
       <div className="grid gap-4 max-sm:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         {SKILLS.map((skill) => {
-          const Glyph = skill.Icon;
           return (
             <div
               key={skill.name}
               className="group flex h-full items-center justify-between rounded-sm border border-white/20 bg-dark transition-colors hover:border-accent"
             >
-              <div className="flex h-full w-8 items-center justify-center bg-black">
-                <Glyph size={16} className="text-white/60 group-hover:text-accent" />
+              <div className="flex h-full items-center justify-center bg-black px-2">
+                <SkillGlyph skill={skill} />
               </div>
-              <div className="flex-1 bg-white py-1 pl-2 text-xs font-bold text-black group-hover:bg-accent">
+              <div className="flex-1 bg-white py-1 font-bold text-black group-hover:bg-accent">
                 {skill.name}
               </div>
             </div>
@@ -288,7 +392,7 @@ function Projects() {
       <SectionLabel n="2" id="projects">
         projects
       </SectionLabel>
-      <div className="grid gap-4 max-sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {PROJECTS.map((p, i) => (
           <div
             key={p.title}
@@ -329,7 +433,7 @@ function Projects() {
                 href={p.repo}
                 target="_blank"
                 rel="noreferrer"
-                className="font-bold transition-colors hover:text-white"
+                className="inline-block py-0.5 font-bold transition-colors hover:text-white max-sm:py-1.5"
               >
                 SOURCE &gt;&gt;
               </a>
@@ -341,7 +445,7 @@ function Projects() {
                 href={p.href}
                 target="_blank"
                 rel="noreferrer"
-                className="font-bold transition-colors hover:text-white"
+                className="inline-block py-0.5 font-bold transition-colors hover:text-white max-sm:py-1.5"
               >
                 VIEW &gt;&gt;
               </a>
@@ -361,6 +465,7 @@ const EXPERIENCE = [
     dates: "Jan 2026 – Present",
     role: "Software Engineer",
     company: "Taurgo",
+    logo: "/logos/taurgo.png",
     location: "Remote — Cardiff, UK",
     body: [
       "Designed and shipped full-stack features — notification system UI and event-driven backend APIs, optimized PostgreSQL schemas with Redis caching to reduce database load by 40%, frontend deployed on Vercel with the backend on AWS.",
@@ -373,6 +478,7 @@ const EXPERIENCE = [
     dates: "Sep 2025 – Dec 2025",
     role: "Software Engineer Intern",
     company: "SmallFare",
+    logo: "/logos/smallfare.png",
     location: "Hyderabad, India",
     body: [
       "Developed onboarding and dashboard features for the EFOrganize ticketing SaaS — implemented authentication, integrated Cashfree for document verification, and improved the Prisma schema.",
@@ -479,9 +585,26 @@ function Experience() {
                   {job.dates}
                 </div>
                 <div className="flex-1 space-y-2 bg-black/40 p-4">
-                  <p className="font-bold text-white">
-                    {job.role} — {job.company}
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <span className="group/logo flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-white/15 bg-white/5 p-1">
+                      <img
+                        src={job.logo}
+                        alt={`${job.company} logo`}
+                        loading="lazy"
+                        width={44}
+                        height={44}
+                        className="logo-glyph size-full object-contain"
+                      />
+                    </span>
+                    <span>
+                      <span className="block font-bold text-white">
+                        {job.role}
+                      </span>
+                      <span className="block text-sm text-white/70">
+                        {job.company}
+                      </span>
+                    </span>
+                  </div>
                   <p className="text-xs text-white/40">{job.location}</p>
                   {job.body.map((line) => (
                     <p
@@ -1095,7 +1218,7 @@ function Github() {
           <p className="mt-7 text-xs tracking-[0.14em] text-white/40 uppercase">
             recent repos
           </p>
-          <div className="grid gap-4 max-sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {recentRepos.map((r, i) => (
             <div
               key={r.id}
@@ -1134,7 +1257,7 @@ function Github() {
                   href={r.html_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-bold text-white/60 transition-colors hover:text-[#00ef68]"
+                  className="inline-block py-0.5 font-bold text-white/60 transition-colors hover:text-[#00ef68] max-sm:py-1.5"
                 >
                   REPO &gt;&gt;
                 </a>
@@ -1154,8 +1277,8 @@ function Github() {
 const SOCIALS = [
   { label: "Email", Icon: SiGmail, href: `mailto:${EMAIL}` },
   { label: "GitHub", Icon: SiGithub, href: `https://github.com/${GITHUB_USER}` },
-  { label: "Discord", Icon: SiDiscord, href: DISCORD },
-  { label: "Portfolio", Icon: FiGlobe, href: "https://mimohshukla.vercel.app" },
+  { label: "LinkedIn", Icon: SiLinkedin, href: LINKEDIN },
+  { label: "Discord", Icon: SiDiscord, handle: DISCORD },
 ];
 
 function Socials() {
@@ -1164,20 +1287,55 @@ function Socials() {
       <SectionLabel n="5" id="socials">
         socials
       </SectionLabel>
-      <section className="flex flex-wrap items-center gap-3 py-4">
-        {SOCIALS.map((s) => (
-          <a
-            key={s.label}
-            href={s.href}
-            target={s.href.startsWith("http") ? "_blank" : undefined}
-            rel="noreferrer"
-            title={s.label}
-            aria-label={s.label}
-            className="group flex size-12 items-center justify-center rounded-sm border border-white/20 bg-black/40 transition-all duration-200 hover:-translate-y-1 hover:border-accent hover:bg-accent hover:text-black hover:shadow-[3px_3px_0px_0px_var(--color-accent)]"
-          >
-            <s.Icon className="size-5 text-white/60 transition-colors duration-200 group-hover:text-black" />
-          </a>
-        ))}
+      <section className="grid grid-cols-1 gap-3 py-4 sm:grid-cols-2 lg:grid-cols-4">
+        {SOCIALS.map((s) => {
+          const body = (
+            <>
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-sm bg-black">
+                <s.Icon className="size-4 text-white/60 transition-colors duration-200 group-hover:text-accent" />
+              </span>
+              <span className="min-w-0 flex-1 truncate text-sm font-bold text-white transition-colors duration-200 group-hover:text-accent">
+                {s.label}
+                {s.handle && (
+                  <span className="ml-2 font-normal text-white/50 group-hover:text-accent">
+                    @{s.handle}
+                  </span>
+                )}
+              </span>
+              <span
+                aria-hidden="true"
+                className="shrink-0 text-white/30 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-accent"
+              >
+                {s.href ? ">>" : ""}
+              </span>
+            </>
+          );
+          const cls =
+            "group flex items-center gap-3 rounded-sm border border-white/20 bg-dark p-2 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent hover:shadow-[3px_3px_0px_0px_var(--color-accent)]";
+
+          /* Discord has no public profile URL, so it renders as a
+             read-only tile showing the handle instead of a dead link. */
+          if (!s.href) {
+            return (
+              <div key={s.label} className={cls} title={`${s.label}: @${s.handle}`}>
+                {body}
+              </div>
+            );
+          }
+          return (
+            <a
+              key={s.label}
+              href={s.href}
+              target={s.href.startsWith("http") ? "_blank" : undefined}
+              rel="noreferrer"
+              title={s.label}
+              aria-label={s.label}
+              className={cls}
+            >
+              {body}
+            </a>
+          );
+        })}
       </section>
     </>
   );
