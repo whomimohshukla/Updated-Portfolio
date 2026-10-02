@@ -95,7 +95,8 @@ function HelloWorld() {
       <section>
         <blockquote className="leading-relaxed">
           <em className="text-xl text-white italic before:content-['>_']">
-            A full stack engineer who likes building things that actually work.
+            A lead full stack engineer who likes building things that actually
+            work.
           </em>
           <cite className="not-italic before:content-[';>_']">
             by <strong className="font-bold text-white">Mimoh Shukla</strong>
@@ -111,9 +112,10 @@ function HelloWorld() {
             keeps everything running.
           </p>
           <p>
-            I am a Software Engineer at Taurgo, working remotely. Before that I
-            was an intern at SmallFare, helping build a ticketing product used by
-            real event organisers.
+            I am a Lead Software Engineer at Taurgo, working remotely and
+            handling a small team of developers. Before that I was an intern at
+            SmallFare, helping build a ticketing product used by real event
+            organisers.
           </p>
           <p>
             I care about software being quick, dependable and easy to use, and I
@@ -474,20 +476,35 @@ function Projects() {
 const EXPERIENCE = [
   {
     dates: "Jan 2026 – Present",
+    role: "Lead Software Engineer",
+    company: "Taurgo",
+    logo: "/logos/taurgo.png",
+    location: "Remote — Cardiff, UK",
+    body: [
+      "Lead a team of developers across the React web app, the Node.js API and the Supabase backend — running sprint planning, reviewing every pull request and unblocking the team, with zero critical production bugs to date.",
+      "Architect the product's core modules in React and Node.js on Supabase (PostgreSQL, Auth, Storage, Row Level Security) — notifications, subscriptions, property inventory and survey reporting.",
+      "Shipped the notification system end-to-end — in-app feed, unread counts, mark-read/dismiss and admin broadcasts — alongside rate limiting and a request queue that keeps the API stable under load.",
+      "Own infrastructure on AWS EC2 with Docker, Nginx load balancing, SSL/TLS and PM2 — 99.9% uptime while cutting hosting costs, with releases pushed through a Jenkins CI/CD pipeline.",
+      "Introduced Generative AI features using Gemini and OpenAI — AI inspection of property photos, AI-written report summaries and generated content — and automated PDF report generation with Puppeteer and PDFKit, cutting manual work by 70%.",
+    ],
+  },
+  {
+    dates: "Jun 2025 – Dec 2025",
     role: "Software Engineer",
     company: "Taurgo",
     logo: "/logos/taurgo.png",
     location: "Remote — Cardiff, UK",
     body: [
-      "Designed and shipped full-stack features — notification system UI and event-driven backend APIs, optimized PostgreSQL schemas with Redis caching to reduce database load by 40%, frontend deployed on Vercel with the backend on AWS.",
-      "Owned infrastructure end-to-end — containerized services with Docker, migrated to AWS EC2 with Nginx load balancing, configured SSL/TLS and PM2, achieving 99.9% uptime while cutting hosting costs.",
-      "Built a Generative AI reporting feature using Gemini and OpenAI APIs, and optimized Puppeteer PDF generation to cut manual work by 70%.",
-      "Collaborated on code reviews and architecture improvements with senior engineers — zero critical production bugs.",
+      "Built full-stack features in React against a Node.js API on Supabase — JWT authentication with bcrypt, two-factor authentication via TOTP and email codes, and role-based access with Row Level Security.",
+      "Designed and tuned the Supabase/PostgreSQL schema behind notifications, surveys, inventory and billing, and cut database load by 40% with query optimisation and caching.",
+      "Implemented Stripe subscriptions, coupons and tax settings end-to-end, and hardened the API with Helmet, DTO validation and request throttling.",
+      "Automated report generation with Puppeteer and PDFKit — cover pages, section-based survey PDFs and image optimisation with Sharp — plus responsive React UI for mobile and desktop.",
+      "Containerised services with Docker, deployed the frontend to Vercel and the API to AWS EC2 behind Nginx, and partnered with senior engineers on code reviews and architecture.",
     ],
   },
   {
-    dates: "Sep 2025 – Dec 2025",
-    role: "Software Engineer Intern",
+    dates: "Sep 2024 – Dec 2024",
+    role: "Full Stack Developer Intern",
     company: "SmallFare",
     logo: "/logos/smallfare.png",
     location: "Hyderabad, India",
