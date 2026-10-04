@@ -473,7 +473,7 @@ function Projects() {
  * ------------------------------------------------------------------ */
 const EXPERIENCE = [
   {
-    dates: "Jun 2025 – Present",
+    dates: "Jan 2026 – Present",
     role: "Software Engineer",
     company: "Taurgo",
     logo: "/logos/taurgo.png",
@@ -488,7 +488,7 @@ const EXPERIENCE = [
     ],
   },
   {
-    dates: "Sep 2024 – Dec 2024",
+    dates: "Sep 2025 – Dec 2025",
     role: "Full Stack Developer Intern",
     company: "SmallFare",
     logo: "/logos/smallfare.png",
