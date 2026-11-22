@@ -59,6 +59,8 @@ import {
   FiStar,
   FiGitCommit,
   FiAlertTriangle,
+  FiCopy,
+  FiCheck,
 } from "react-icons/fi";
 
 const GITHUB_USER = "whomimohshukla";
@@ -68,6 +70,21 @@ const LINKEDIN = "https://www.linkedin.com/in/mimohshukla00";
 const DISCORD = "reboot_life";
 const GH_TOKEN = import.meta.env.VITE_GH_TOKEN;
 
+const NAV_ITEMS = [
+  { id: "hello", label: "hello" },
+  { id: "skills", label: "skills" },
+  { id: "projects", label: "projects" },
+  { id: "experience", label: "experience" },
+  { id: "github", label: "github" },
+  { id: "socials", label: "socials" },
+];
+const NAV_IDS = NAV_ITEMS.map((item) => item.id);
+
+const HERO_PRIMARY_LINK =
+  "group inline-flex min-h-10 items-center justify-center gap-2 rounded-sm border border-white bg-white px-4 py-2 text-[13px] font-bold text-dark transition-all hover:-translate-y-0.5 hover:bg-transparent hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+const HERO_SECONDARY_LINK =
+  "group inline-flex min-h-10 items-center justify-center gap-2 rounded-sm border border-white/25 bg-black/40 px-4 py-2 text-[13px] font-bold text-white/80 transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+
 /* Green is reserved for hover states inside the GitHub section only. */
 const NEON = "#00ef68";
 
@@ -76,9 +93,209 @@ const NEON = "#00ef68";
  * ------------------------------------------------------------------ */
 function SectionLabel({ n, id, className = "", children }) {
   return (
-    <div id={id} className={`pt-8 pb-4 ${className}`}>
+    <div id={id} className={`pt-10 pb-4 scroll-mt-20 sm:pt-12 ${className}`}>
       {n}. <span className="font-bold text-white">_{children}</span>
     </div>
+  );
+}
+
+function useActiveSection(ids) {
+  const [active, setActive] = useState(ids[0]);
+
+  useEffect(() => {
+    const update = () => {
+      const marker = window.scrollY + window.innerHeight * 0.3;
+      let current = ids[0];
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        if (top <= marker) current = id;
+      });
+      setActive(current);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [ids]);
+
+  return active;
+}
+
+function Navbar() {
+  const active = useActiveSection(NAV_IDS);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 12);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  return (
+    <header
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled
+          ? "border-white/15 bg-dark/90 backdrop-blur-md"
+          : "border-transparent bg-dark/70 backdrop-blur-sm"
+      }`}
+    >
+      <nav
+        aria-label="Primary"
+        className="container mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5"
+      >
+        <div className="hidden items-center gap-1 md:flex">
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              aria-current={active === item.id ? "location" : undefined}
+              className={`relative px-1.5 py-1 text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white after:absolute after:inset-x-1.5 after:-bottom-0.5 after:h-px after:bg-white ${
+                active === item.id
+                  ? "text-white after:opacity-100"
+                  : "text-white/45 after:opacity-0 hover:text-white"
+              }`}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+
+        <div className="ml-auto flex items-center gap-2">
+          <a
+            href={`mailto:${EMAIL}`}
+            className="hidden min-h-8 items-center rounded-sm border border-white/25 px-3 py-1 text-[12px] font-bold text-white/75 transition-colors hover:border-white hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:inline-flex"
+          >
+            contact &gt;&gt;
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-sm border border-white/25 text-lg text-white transition-colors hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:hidden"
+          >
+            <span aria-hidden="true">{open ? "×" : "≡"}</span>
+          </button>
+        </div>
+      </nav>
+
+      {open && (
+        <div
+          id="mobile-nav"
+          className="border-t border-white/15 bg-dark/95 px-4 pb-3 pt-2 md:hidden"
+        >
+          <div className="grid grid-cols-2 gap-2">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setOpen(false)}
+                aria-current={active === item.id ? "location" : undefined}
+                className={`rounded-sm border px-3 py-2 text-[12px] transition-colors ${
+                  active === item.id
+                    ? "border-white bg-white/10 font-bold text-white"
+                    : "border-white/15 text-white/55 hover:border-white/50 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href={`mailto:${EMAIL}`}
+              onClick={() => setOpen(false)}
+              className="col-span-2 inline-flex min-h-9 items-center justify-center rounded-sm border border-white bg-white px-3 py-2 text-[12px] font-bold text-dark"
+            >
+              contact &gt;&gt;
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function BackToTop() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const update = () => setShow(window.scrollY > 600);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <a
+      href="#hello"
+      aria-label="Back to top"
+      title="Back to top"
+      className="fixed right-4 bottom-4 z-40 inline-flex size-9 items-center justify-center rounded-sm border border-white/30 bg-dark/90 text-sm font-bold text-white shadow-lg backdrop-blur transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+    >
+      <span aria-hidden="true">↑</span>
+    </a>
+  );
+}
+
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+    } catch {
+      const input = document.createElement("textarea");
+      input.value = EMAIL;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+    setCopied(true);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), 1800);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      aria-label={copied ? "Email address copied" : "Copy email address"}
+      className={HERO_SECONDARY_LINK}
+    >
+      {copied ? (
+        <FiCheck aria-hidden="true" className="size-3.5" />
+      ) : (
+        <FiCopy aria-hidden="true" className="size-3.5" />
+      )}
+      {copied ? "Copied" : "Copy email"}
+    </button>
   );
 }
 
@@ -92,49 +309,46 @@ function HelloWorld() {
         hello world
       </SectionLabel>
 
-      <section>
-        <blockquote className="leading-relaxed">
-          <em className="text-xl text-white italic before:content-['>_']">
-            A full stack engineer who likes building things that actually work.
-          </em>
-          <cite className="not-italic before:content-[';>_']">
-            by <strong className="font-bold text-white">Mimoh Shukla</strong>
-          </cite>
-        </blockquote>
+      <section aria-label="Introduction" className="hero-rise max-w-3xl pb-4">
+        <p className="text-[15px] leading-relaxed text-white/85 sm:text-[17px]">
+          <strong className="font-bold text-white">Mimoh Shukla</strong> — AI Engineer
+          and full stack engineer who likes building things that actually work.
+        </p>
 
-        <br />
-
-        <div className="max-w-2xl space-y-4 text-[15px] leading-[1.8] text-white/70">
+        <div className="mt-4 space-y-3 text-[15px] leading-[1.8] text-white/65">
           <p>
-            I build and ship complete products — the screens people use, the
-            servers behind them, the databases underneath, and the setup that
-            keeps everything running.
+            From the screens people click through to the APIs, databases and deployment
+            setup behind them, I handle the whole path — including AI features built
+            with LangChain and LangGraph — and make sure it holds up in production.
           </p>
           <p>
-            I am a Software Engineer at Taurgo, working remotely. Before that I
-            was an intern at SmallFare, helping build a ticketing product used by
-            real event organisers.
+            I&apos;m a Software Engineer at{" "}
+            <strong className="font-bold text-white">Taurgo</strong> (remote), and
+            previously interned at{" "}
+            <strong className="font-bold text-white">SmallFare</strong> on a ticketing
+            product used by real event organisers.
           </p>
           <p>
-            I care about software being quick, dependable and easy to use, and I
-            like being the person who actually finishes the job.
+            I care about software that is quick, dependable and easy to use — and I like
+            being the person who finishes the job.
           </p>
         </div>
 
-        <div className="mt-5 flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-6">
-          <a
-            href={`mailto:${EMAIL}`}
-            className="inline-block py-0.5 text-accent before:content-['-'] transition-colors hover:text-white max-sm:py-2"
-          >
-            {EMAIL}
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <a href={`mailto:${EMAIL}`} className={HERO_PRIMARY_LINK}>
+            Email me <span aria-hidden="true">&gt;&gt;</span>
+          </a>
+          <CopyEmail />
+          <a href="#projects" className={HERO_SECONDARY_LINK}>
+            View projects <span aria-hidden="true">&gt;&gt;</span>
           </a>
           <a
             href={LINKEDIN}
             target="_blank"
             rel="noreferrer"
-            className="inline-block py-0.5 text-accent before:content-['-'] transition-colors hover:text-white max-sm:py-2"
+            className={HERO_SECONDARY_LINK}
           >
-            linkedin
+            LinkedIn <span aria-hidden="true">&gt;&gt;</span>
           </a>
         </div>
       </section>
@@ -314,7 +528,16 @@ const PROJECTS = [
     status: "LIVE",
     image: "/projects/jestbest.png",
     body: "AI-powered QA SaaS that autonomously explores web apps, generates test cases, runs them in a real browser and analyses the failures to surface bugs. TypeScript and Express 5 backend on Prisma and PostgreSQL, with BullMQ and Redis queueing the Playwright browser jobs. JWT auth with TOTP 2FA, S3 artefact storage and Docker for deployment.",
-    tags: ["TypeScript", "Playwright", "Express.js", "PostgreSQL", "BullMQ", "Docker"],
+    tags: [
+      "TypeScript",
+      "Playwright",
+      "Express.js",
+      "PostgreSQL",
+      "BullMQ",
+      "LangChain",
+      "LangGraph",
+      "Docker",
+    ],
     href: "https://veribot-nine.vercel.app",
     repo: "https://github.com/whomimohshukla/JestBest",
   },
@@ -325,7 +548,15 @@ const PROJECTS = [
     status: "LIVE",
     image: "/claimwise.png",
     body: "Full-stack AI SaaS that finds unclaimed UK benefits, bill savings and social tariff support. Built the frontend and backend API with rate limiting, authentication and PDF parsing. Deployed on AWS EC2 with Nginx and automated CI/CD.",
-    tags: ["Next.js", "Express.js", "PostgreSQL", "Redis", "AWS"],
+    tags: [
+      "Next.js",
+      "Express.js",
+      "PostgreSQL",
+      "Redis",
+      "LangChain",
+      "LangGraph",
+      "AWS",
+    ],
     href: "https://claimwise-six.vercel.app/",
     repo: "https://github.com/whomimohshukla/Savvy-UK",
   },
@@ -484,6 +715,7 @@ const EXPERIENCE = [
       "Designed and tuned the Supabase/PostgreSQL schema behind notifications, surveys, property inventory and billing, cutting database load by 40% with query optimisation and caching.",
       "Implemented Stripe subscriptions, coupons and tax settings end-to-end, and hardened the API with Helmet, DTO validation and request throttling.",
       "Introduced Generative AI features using Gemini and OpenAI — AI inspection of property photos, AI-written report summaries — and automated PDF report generation with Puppeteer, PDFKit and Sharp image optimisation, cutting manual work by 70%.",
+      "Built agentic AI workflows with LangChain and LangGraph — multi-step chains, tool calls and RAG pipelines — making the Gemini and OpenAI features reusable and reliable in production.",
       "Own infrastructure on AWS EC2 with Docker, Nginx load balancing, SSL/TLS and PM2 — 99.9% uptime while cutting hosting costs, frontend on Vercel and releases through a Jenkins CI/CD pipeline.",
     ],
   },
@@ -1360,6 +1592,8 @@ function Socials() {
 export default function App() {
   return (
     <>
+      <Navbar />
+
       <div className="synthwave" aria-hidden="true">
         <div className="grid">
           <div className="grid-fade" />
@@ -1377,6 +1611,8 @@ export default function App() {
         <Github />
         <Socials />
       </main>
+
+      <BackToTop />
     </>
   );
 }
