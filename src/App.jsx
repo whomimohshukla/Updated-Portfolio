@@ -26,7 +26,6 @@ import {
   SiWebrtc,
   SiGithubactions,
   SiAmazonwebservices,
-  SiCloudflare,
   SiGmail,
   SiGithub,
   SiDiscord,
@@ -65,18 +64,17 @@ import {
 
 const GITHUB_USER = "whomimohshukla";
 const EMAIL = "mimohshukla0001@gmail.com";
-/* TODO: replace with your own Discord invite or profile link. */
 const LINKEDIN = "https://www.linkedin.com/in/mimohshukla00";
 const DISCORD = "reboot_life";
 const GH_TOKEN = import.meta.env.VITE_GH_TOKEN;
 
 const NAV_ITEMS = [
-  { id: "hello", label: "hello" },
+  { id: "about", label: "about" },
   { id: "skills", label: "skills" },
   { id: "projects", label: "projects" },
   { id: "experience", label: "experience" },
   { id: "github", label: "github" },
-  { id: "socials", label: "socials" },
+  { id: "contact", label: "contact" },
 ];
 const NAV_IDS = NAV_ITEMS.map((item) => item.id);
 
@@ -94,7 +92,8 @@ const NEON = "#00ef68";
 function SectionLabel({ n, id, className = "", children }) {
   return (
     <div id={id} className={`pt-10 pb-4 scroll-mt-20 sm:pt-12 ${className}`}>
-      {n}. <span className="font-bold text-white">_{children}</span>
+      <span className="text-white/40">{n}.</span>{" "}
+      <span className="font-bold text-white">{children}</span>
     </div>
   );
 }
@@ -182,7 +181,7 @@ function Navbar() {
             href={`mailto:${EMAIL}`}
             className="hidden min-h-8 items-center rounded-sm border border-white/25 px-3 py-1 text-[12px] font-bold text-white/75 transition-colors hover:border-white hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:inline-flex"
           >
-            contact &gt;&gt;
+            Get in touch
           </a>
 
           <button
@@ -224,7 +223,7 @@ function Navbar() {
               onClick={() => setOpen(false)}
               className="col-span-2 inline-flex min-h-9 items-center justify-center rounded-sm border border-white bg-white px-3 py-2 text-[12px] font-bold text-dark"
             >
-              contact &gt;&gt;
+              Get in touch
             </a>
           </div>
         </div>
@@ -247,7 +246,7 @@ function BackToTop() {
 
   return (
     <a
-      href="#hello"
+      href="#about"
       aria-label="Back to top"
       title="Back to top"
       className="fixed right-4 bottom-4 z-40 inline-flex size-9 items-center justify-center rounded-sm border border-white/30 bg-dark/90 text-sm font-bold text-white shadow-lg backdrop-blur transition-all hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -300,47 +299,49 @@ function CopyEmail() {
 }
 
 /* ------------------------------------------------------------------ *
- * 0. _hello world
+ * 1. about
  * ------------------------------------------------------------------ */
 function HelloWorld() {
   return (
     <>
-      <SectionLabel n="0" id="hello">
-        hello world
+      <SectionLabel n="01" id="about">
+        About
       </SectionLabel>
 
       <section aria-label="Introduction" className="hero-rise max-w-3xl pb-4">
         <p className="text-[15px] leading-relaxed text-white/85 sm:text-[17px]">
-          <strong className="font-bold text-white">Mimoh Shukla</strong> — AI Engineer
-          and full stack engineer who likes building things that actually work.
+          Hi, I&apos;m <strong className="font-bold text-white">Mimoh Shukla</strong> — an
+          AI and full-stack engineer who builds products from the first screen to the
+          final deploy.
         </p>
 
         <div className="mt-4 space-y-3 text-[15px] leading-[1.8] text-white/65">
           <p>
-            From the screens people click through to the APIs, databases and deployment
-            setup behind them, I handle the whole path — including AI features built
-            with LangChain and LangGraph — and make sure it holds up in production.
+            That means the interface people click through, the APIs and databases behind
+            it, and the infrastructure that keeps it running. Lately, a lot of my work
+            has been AI features built with LangChain and LangGraph that need to be
+            reliable in the real world, not just in a demo.
           </p>
           <p>
             I&apos;m a Software Engineer at{" "}
-            <strong className="font-bold text-white">Taurgo</strong> (remote), and
-            previously interned at{" "}
-            <strong className="font-bold text-white">SmallFare</strong> on a ticketing
-            product used by real event organisers.
+            <strong className="font-bold text-white">Taurgo</strong> (remote), and before
+            that I interned at{" "}
+            <strong className="font-bold text-white">SmallFare</strong>, where I worked on
+            a ticketing product used by real event organisers.
           </p>
           <p>
-            I care about software that is quick, dependable and easy to use — and I like
-            being the person who finishes the job.
+            I care about software that is fast, dependable and easy to use — and I like
+            being the person who sees it through to the end.
           </p>
         </div>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <a href={`mailto:${EMAIL}`} className={HERO_PRIMARY_LINK}>
-            Email me <span aria-hidden="true">&gt;&gt;</span>
+            Email me
           </a>
           <CopyEmail />
           <a href="#projects" className={HERO_SECONDARY_LINK}>
-            View projects <span aria-hidden="true">&gt;&gt;</span>
+            View projects
           </a>
           <a
             href={LINKEDIN}
@@ -348,7 +349,7 @@ function HelloWorld() {
             rel="noreferrer"
             className={HERO_SECONDARY_LINK}
           >
-            LinkedIn <span aria-hidden="true">&gt;&gt;</span>
+            LinkedIn
           </a>
         </div>
       </section>
@@ -357,7 +358,7 @@ function HelloWorld() {
 }
 
 /* ------------------------------------------------------------------ *
- * 1. _skills
+ * 2. skills
  * ------------------------------------------------------------------ */
 /* ------------------------------------------------------------------ *
  * Skill glyph — plain monochrome, accent on hover (as before)
@@ -369,28 +370,28 @@ const SKILL_COLORS = {
   "React": "#61DAFB",
   "Next.js": "#FFFFFF",
   "TypeScript": "#3178C6",
-  "TailwindCSS": "#06c0df",
+  "Tailwind CSS": "#06c0df",
   "JavaScript": "#F7DF1E",
   "Python": "#3878ae",
-  "HTML5": "#E34F26",
-  "CSS3": "#7339ac",
+  "HTML": "#E34F26",
+  "CSS": "#7339ac",
   "Node.js": "#5FA04E",
-  "Express.js": "#E5E7EB",
-  "Socket.io": "#E5E7EB",
+  "Express": "#E5E7EB",
+  "Socket.IO": "#E5E7EB",
   "GraphQL": "#e6009b",
   "REST APIs": "#12d393",
   "Microservices": "#0EA5E9",
-  "Event-Driven": "#9b4b5f",
+  "Event-driven systems": "#9b4b5f",
   "Authentication": "#E11D48",
   "Authorization": "#7C3AED",
-  "Rate Limiting": "#F59E0B",
+  "Rate limiting": "#F59E0B",
   "PostgreSQL": "#4169E1",
   "MongoDB": "#47A248",
   "Redis": "#FF4438",
   "Prisma": "#7C9CBF",
   "TimescaleDB": "#FDB515",
   "Supabase": "#3FCF8E",
-  "Neon DB": "#00e699",
+  "Neon": "#00e699",
   "AWS EC2": "#FF9900",
   "Docker": "#2496ED",
   "Nginx": "#00e657",
@@ -402,14 +403,14 @@ const SKILL_COLORS = {
   "Vite": "#9135FF",
   "WebSockets": "#17cfbb",
   "WebRTC": "#D1D5DB",
-  "Claude AI": "#D97757",
+  "Claude API": "#D97757",
   "Gemini API": "#8E75B2",
   "OpenAI API": "#5033b3",
-  "LLM Apps": "#8B5CF6",
+  "LLM apps": "#8B5CF6",
   "LangChain": "#7FC8FF",
   "LangGraph": "#22C55E",
   "RAG": "#6366F1",
-  "Agentic Workflows": "#D946EF",
+  "Agentic workflows": "#D946EF",
   "OpenCode": "#2DD4BF",
   "Codex": "#5033b3",
   "Cursor": "#C084FC",
@@ -434,104 +435,143 @@ function SkillGlyph({ skill }) {
   );
 }
 
-const SKILLS = [
-  { name: "React", Icon: SiReact },
-  { name: "Next.js", Icon: SiNextdotjs },
-  { name: "TypeScript", Icon: SiTypescript },
-  { name: "TailwindCSS", Icon: SiTailwindcss },
-  { name: "JavaScript", Icon: SiJavascript },
-  { name: "Python", Icon: SiPython },
-  { name: "HTML5", Icon: SiHtml5 },
-  { name: "CSS3", Icon: SiCss3 },
-  { name: "Node.js", Icon: SiNodedotjs },
-  { name: "Express.js", Icon: SiExpress },
-  { name: "Socket.io", Icon: SiSocketdotio },
-  { name: "GraphQL", Icon: SiGraphql },
-  { name: "REST APIs", Icon: FiServer },
-  { name: "Microservices", Icon: FiGrid },
-  { name: "Event-Driven", Icon: SiApachekafka },
-  { name: "Authentication", Icon: FiLock },
-  { name: "Authorization", Icon: FiKey },
-  { name: "Rate Limiting", Icon: FiActivity },
-  { name: "PostgreSQL", Icon: SiPostgresql },
-  { name: "MongoDB", Icon: SiMongodb },
-  { name: "Redis", Icon: SiRedis },
-  { name: "Prisma", Icon: SiPrisma },
-  { name: "TimescaleDB", Icon: SiTimescale },
-  { name: "Supabase", Icon: SiSupabase },
-  { name: "Neon DB", Icon: SiCloudflare },
-  { name: "AWS EC2", Icon: SiAmazonwebservices },
-  { name: "Docker", Icon: SiDocker },
-  { name: "Nginx", Icon: SiNginx },
-  { name: "CI/CD", Icon: FiGitBranch },
-  { name: "GitHub Actions", Icon: SiGithubactions },
-  { name: "PM2", Icon: FiTerminal },
-  { name: "SSL/TLS", Icon: FiShield },
-  { name: "Vercel", Icon: SiVercel },
-  { name: "Vite", Icon: SiVite },
-  { name: "WebSockets", Icon: FiRadio },
-  { name: "WebRTC", Icon: SiWebrtc },
-  { name: "Claude AI", Icon: SiClaude },
-  { name: "Gemini API", Icon: SiGooglegemini },
-  { name: "OpenAI API", Icon: SiOpenai },
-  { name: "LLM Apps", Icon: FiCpu },
-  { name: "LangChain", Icon: SiLangchain },
-  { name: "LangGraph", Icon: SiDgraph },
-  { name: "RAG", Icon: FiDatabase },
-  { name: "Agentic Workflows", Icon: FiZap },
-  { name: "OpenCode", Icon: FiTerminal },
-  { name: "Codex", Icon: SiOpenai },
-  { name: "Cursor", Icon: FiMousePointer },
-  { name: "VS Code", Icon: FiCode },
-  { name: "Claude Code", Icon: SiClaude },
-  { name: "Git", Icon: SiGit },
-  { name: "Bash", Icon: SiGnubash },
-  { name: "Ubuntu", Icon: SiUbuntu },
-  { name: "Linux", Icon: SiLinux },
+const SKILL_GROUPS = [
+  {
+    label: "Frontend",
+    skills: [
+      { name: "React", Icon: SiReact },
+      { name: "Next.js", Icon: SiNextdotjs },
+      { name: "TypeScript", Icon: SiTypescript },
+      { name: "JavaScript", Icon: SiJavascript },
+      { name: "Tailwind CSS", Icon: SiTailwindcss },
+      { name: "HTML", Icon: SiHtml5 },
+      { name: "CSS", Icon: SiCss3 },
+      { name: "Vite", Icon: SiVite },
+    ],
+  },
+  {
+    label: "Backend & APIs",
+    skills: [
+      { name: "Node.js", Icon: SiNodedotjs },
+      { name: "Express", Icon: SiExpress },
+      { name: "Python", Icon: SiPython },
+      { name: "REST APIs", Icon: FiServer },
+      { name: "GraphQL", Icon: SiGraphql },
+      { name: "WebSockets", Icon: FiRadio },
+      { name: "Socket.IO", Icon: SiSocketdotio },
+      { name: "WebRTC", Icon: SiWebrtc },
+      { name: "Authentication", Icon: FiLock },
+      { name: "Authorization", Icon: FiKey },
+      { name: "Rate limiting", Icon: FiActivity },
+      { name: "Microservices", Icon: FiGrid },
+      { name: "Event-driven systems", Icon: SiApachekafka },
+    ],
+  },
+  {
+    label: "Databases",
+    skills: [
+      { name: "PostgreSQL", Icon: SiPostgresql },
+      { name: "MongoDB", Icon: SiMongodb },
+      { name: "Redis", Icon: SiRedis },
+      { name: "Prisma", Icon: SiPrisma },
+      { name: "Supabase", Icon: SiSupabase },
+      { name: "Neon", Icon: SiPostgresql },
+      { name: "TimescaleDB", Icon: SiTimescale },
+    ],
+  },
+  {
+    label: "AI & LLMs",
+    skills: [
+      { name: "LangChain", Icon: SiLangchain },
+      { name: "LangGraph", Icon: SiDgraph },
+      { name: "RAG", Icon: FiDatabase },
+      { name: "Agentic workflows", Icon: FiZap },
+      { name: "OpenAI API", Icon: SiOpenai },
+      { name: "Gemini API", Icon: SiGooglegemini },
+      { name: "Claude API", Icon: SiClaude },
+      { name: "LLM apps", Icon: FiCpu },
+    ],
+  },
+  {
+    label: "Cloud & DevOps",
+    skills: [
+      { name: "AWS EC2", Icon: SiAmazonwebservices },
+      { name: "Docker", Icon: SiDocker },
+      { name: "Nginx", Icon: SiNginx },
+      { name: "CI/CD", Icon: FiGitBranch },
+      { name: "GitHub Actions", Icon: SiGithubactions },
+      { name: "Vercel", Icon: SiVercel },
+      { name: "PM2", Icon: FiTerminal },
+      { name: "SSL/TLS", Icon: FiShield },
+    ],
+  },
+  {
+    label: "Tools",
+    skills: [
+      { name: "Git", Icon: SiGit },
+      { name: "Bash", Icon: SiGnubash },
+      { name: "Linux", Icon: SiLinux },
+      { name: "Ubuntu", Icon: SiUbuntu },
+      { name: "VS Code", Icon: FiCode },
+      { name: "Cursor", Icon: FiMousePointer },
+      { name: "Claude Code", Icon: SiClaude },
+      { name: "OpenCode", Icon: FiTerminal },
+      { name: "Codex", Icon: SiOpenai },
+    ],
+  },
 ];
 
 function Skills() {
   return (
     <>
-      <SectionLabel n="1" id="skills">
-        skills
+      <SectionLabel n="02" id="skills">
+        Skills
       </SectionLabel>
-      <div className="grid gap-4 max-sm:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-        {SKILLS.map((skill) => {
-          return (
-            <div
-              key={skill.name}
-              className="group flex h-full items-center justify-between rounded-sm border border-white/20 bg-dark transition-colors hover:border-accent"
-            >
-              <div className="flex h-full items-center justify-center bg-black px-2">
-                <SkillGlyph skill={skill} />
-              </div>
-              <div className="flex-1 bg-white py-1 font-bold text-black group-hover:bg-accent">
-                {skill.name}
-              </div>
+      <p className="-mt-1 pb-5 text-sm leading-relaxed text-white/60">
+        The tools I use most, grouped by what I use them for.
+      </p>
+      <div className="space-y-6">
+        {SKILL_GROUPS.map((group) => (
+          <section key={group.label}>
+            <h3 className="mb-2 text-xs font-bold tracking-[0.14em] text-white/45 uppercase">
+              {group.label}
+            </h3>
+            <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+              {group.skills.map((skill) => (
+                <div
+                  key={skill.name}
+                  className="group flex h-full items-center justify-between rounded-sm border border-white/20 bg-dark transition-colors hover:border-accent"
+                >
+                  <div className="flex h-full items-center justify-center bg-black px-2">
+                    <SkillGlyph skill={skill} />
+                  </div>
+                  <div className="flex-1 bg-white py-1 font-bold text-black group-hover:bg-accent">
+                    {skill.name}
+                  </div>
+                </div>
+              ))}
             </div>
-          );
-        })}
+          </section>
+        ))}
       </div>
     </>
   );
 }
 
 /* ------------------------------------------------------------------ *
- * 2. _projects
+ * 3. projects
  * ------------------------------------------------------------------ */
 const PROJECTS = [
   {
     title: "JestBest",
-    kind: "AI",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "AI product",
+    status: "Live",
     image: "/projects/jestbest.png",
-    body: "AI-powered QA SaaS that autonomously explores web apps, generates test cases, runs them in a real browser and analyses the failures to surface bugs. TypeScript and Express 5 backend on Prisma and PostgreSQL, with BullMQ and Redis queueing the Playwright browser jobs. JWT auth with TOTP 2FA, S3 artefact storage and Docker for deployment.",
+    body: "An AI QA tool that explores a web app, writes test cases, runs them in a real browser and explains why they failed. Built with TypeScript, Express and PostgreSQL, with BullMQ and Redis queueing the Playwright jobs, JWT auth with 2FA, S3 storage and Docker for deployment.",
     tags: [
       "TypeScript",
       "Playwright",
-      "Express.js",
+      "Express",
       "PostgreSQL",
       "BullMQ",
       "LangChain",
@@ -543,14 +583,13 @@ const PROJECTS = [
   },
   {
     title: "ClaimWise UK",
-    kind: "AI",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "AI product",
+    status: "Live",
     image: "/claimwise.png",
-    body: "Full-stack AI SaaS that finds unclaimed UK benefits, bill savings and social tariff support. Built the frontend and backend API with rate limiting, authentication and PDF parsing. Deployed on AWS EC2 with Nginx and automated CI/CD.",
+    body: "Helps people in the UK find benefits, bill savings and social tariffs they might be missing. I built the frontend and API with authentication, rate limiting and PDF parsing, then deployed it on AWS EC2 with Nginx and automated CI/CD.",
     tags: [
       "Next.js",
-      "Express.js",
+      "Express",
       "PostgreSQL",
       "Redis",
       "LangChain",
@@ -562,66 +601,60 @@ const PROJECTS = [
   },
   {
     title: "BookMyBus",
-    kind: "RT",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "Real-time",
+    status: "Live",
     image: "/projects/bookmybus.png",
-    body: "End-to-end real-time ticketing platform with a distributed backend. Dynamic seat locking over WebSockets with rate-limited APIs, GPS tracking and payment integration. Containerized with Docker and deployed on AWS EC2 behind Nginx load balancing.",
-    tags: ["Node.js", "Express.js", "MongoDB", "Socket.io", "Docker", "AWS"],
+    body: "A real-time bus ticketing platform with seat locking over WebSockets, live GPS tracking and payments. Rate-limited APIs, Docker containers and an AWS EC2 deployment behind Nginx keep it steady under load.",
+    tags: ["Node.js", "Express", "MongoDB", "Socket.IO", "Docker", "AWS"],
     href: "https://bookmybus-services247.vercel.app/",
     repo: "https://github.com/whomimohshukla/Book-My-Bus",
   },
   {
     title: "DevSwap",
-    kind: "RT",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "Real-time",
+    status: "Live",
     image: "/projects/devswap.png",
-    body: "Full-stack skill-exchange platform with a synchronized real-time code editor and WebRTC video chat. Event-driven Express.js backend with Redis-backed user matching and Socket.io synchronization, Gemini API for lesson generation, containerized on AWS EC2.",
-    tags: ["Node.js", "Express.js", "Socket.io", "WebRTC", "MongoDB", "Docker"],
+    body: "A skill-exchange platform where people meet for live lessons with a shared code editor and WebRTC video. Matching runs through Redis and Socket.IO, lesson plans come from the Gemini API, and everything runs in containers on AWS EC2.",
+    tags: ["Node.js", "Express", "Socket.IO", "WebRTC", "MongoDB", "Docker"],
     href: "https://dev-swap-live.vercel.app/",
     repo: "https://github.com/whomimohshukla/devSwap.live",
   },
   {
     title: "Chatr",
-    kind: "RT",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "Real-time",
+    status: "Live",
     image: "/projects/chatrr.png",
-    body: "Realtime chat application with rooms and DMs, live presence and typing indicators. Websocket-driven messaging kept in sync across clients, behind rate-limited Express APIs and JWT authentication.",
-    tags: ["React", "Socket.io", "Node.js", "Express", "MongoDB"],
+    body: "A real-time chat app with rooms, direct messages, presence and typing indicators. Messages sync instantly across clients over WebSockets, with JWT auth and rate-limited Express APIs.",
+    tags: ["React", "Socket.IO", "Node.js", "Express", "MongoDB"],
     href: "https://chatr-flame.vercel.app/",
     repo: "https://github.com/whomimohshukla/Chatr-",
   },
   {
     title: "DSA Tracker",
-    kind: "WEB",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "Web app",
+    status: "Live",
     image: "/dsa-tracker.png",
-    body: "Personal DSA tracker built to stop losing scattered notes: 300+ curated questions across 13 topics with hints, full approaches, company tags, search and filtering, and saved progress.",
+    body: "A home for 300+ curated DSA questions across 13 topics, with hints, full solutions, company tags, search and saved progress. Built because my notes were scattered across too many tabs.",
     tags: ["Node.js", "Express", "MongoDB", "JWT", "Render"],
     href: "https://mimohdsasheet.onrender.com/",
     repo: "https://github.com/whomimohshukla/dsa-Tracker",
   },
   {
     title: "SkillBridge",
-    kind: "WEB",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "Web app",
+    status: "Live",
     image: "/projects/skillbridge.png",
-    body: "Marketplace connecting clients and freelancers through gigs, proposals, realtime messaging and a secure payment flow wired through Razorpay.",
-    tags: ["React", "Node.js", "Express", "MongoDB", "Socket.io", "Razorpay"],
+    body: "A marketplace connecting clients and freelancers through gigs, proposals, real-time messaging and secure Razorpay payments.",
+    tags: ["React", "Node.js", "Express", "MongoDB", "Socket.IO", "Razorpay"],
     href: "https://skill-bridge-frontent-v-1-0-0.vercel.app/",
     repo: "https://github.com/whomimohshukla/-Freelance-Marketplace--Project",
   },
   {
     title: "Weather App",
-    kind: "WEB",
-    target: "TARGET: PRODUCTION",
-    status: "LIVE",
+    category: "Web app",
+    status: "Live",
     image: "/projects/weatherAPP.png",
-    body: "Lightweight weather dashboard fetching live conditions by city with a clean responsive UI. Zero dependencies — plain HTML, CSS and JavaScript against the OpenWeather API.",
+    body: "A small weather dashboard that looks up live conditions by city. Plain HTML, CSS and JavaScript with the OpenWeather API — no build step and no dependencies.",
     tags: ["HTML", "CSS", "JavaScript", "OpenWeather"],
     href: "https://weathercurrenthere.netlify.app",
     repo: "https://github.com/whomimohshukla/Whether-using-javascript",
@@ -631,9 +664,13 @@ const PROJECTS = [
 function Projects() {
   return (
     <>
-      <SectionLabel n="2" id="projects">
-        projects
+      <SectionLabel n="03" id="projects">
+        Projects
       </SectionLabel>
+      <p className="-mt-1 pb-5 text-sm leading-relaxed text-white/60">
+        A few things I&apos;ve designed, built and shipped. Each one links to the live app
+        and the source code.
+      </p>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {PROJECTS.map((p, i) => (
           <div
@@ -641,11 +678,11 @@ function Projects() {
             className="group mr-1 flex flex-col rounded-sm border border-white/20 bg-black/60 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-[4px_4px_0px_0px_var(--color-accent)]"
           >
             <div className="flex items-center justify-between border-b border-white/20 bg-black px-4 py-2 transition-colors group-hover:bg-accent group-hover:text-black">
-              <span className="font-bold">
-                {String(i + 1).padStart(2, "0")}_{p.title.replace(/\s+/g, "")}
+              <span className="truncate font-bold">
+                {String(i + 1).padStart(2, "0")} — {p.title}
               </span>
-              <span className="text-xs text-white/60 group-hover:text-black">
-                [{p.kind}]
+              <span className="shrink-0 pl-2 text-xs text-white/60 group-hover:text-black">
+                {p.category}
               </span>
             </div>
 
@@ -659,38 +696,45 @@ function Projects() {
               />
             </div>
 
-            <div className="flex flex-1 flex-col gap-2 p-4">
-              <div className="text-xs text-accent">{p.target}</div>
+            <div className="flex flex-1 flex-col gap-3 p-4">
               <p className="flex-1 text-sm leading-relaxed text-white/60">{p.body}</p>
-              <div className="flex flex-wrap gap-2 text-xs text-white">
+              <div className="flex flex-wrap gap-1.5 text-[11px] text-white/70">
                 {p.tags.map((t) => (
-                  <span key={t}>[{t}]</span>
+                  <span
+                    key={t}
+                    className="rounded-sm border border-white/15 px-1.5 py-0.5"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-t border-white/20 p-4 text-xs text-white/60">
-              <span>{p.status}</span>
-              <a
-                href={p.repo}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block py-0.5 font-bold transition-colors hover:text-white max-sm:py-1.5"
-              >
-                SOURCE &gt;&gt;
-              </a>
-            </div>
-
-            <div className="flex items-center justify-between border-t border-white/20 p-4 text-xs text-white/60">
-              <span>&nbsp;</span>
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block py-0.5 font-bold transition-colors hover:text-white max-sm:py-1.5"
-              >
-                VIEW &gt;&gt;
-              </a>
+            <div className="flex items-center justify-between gap-3 border-t border-white/20 p-4 text-xs text-white/60">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+                {p.status}
+              </span>
+              <div className="flex items-center gap-4">
+                <a
+                  href={p.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`View source code for ${p.title}`}
+                  className="inline-block py-0.5 font-bold transition-colors hover:text-white max-sm:py-1.5"
+                >
+                  Source code
+                </a>
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`View ${p.title} live demo`}
+                  className="inline-block py-0.5 font-bold transition-colors hover:text-white max-sm:py-1.5"
+                >
+                  Live demo
+                </a>
+              </div>
             </div>
           </div>
         ))}
@@ -700,7 +744,7 @@ function Projects() {
 }
 
 /* ------------------------------------------------------------------ *
- * 3. _experience
+ * 4. experience
  * ------------------------------------------------------------------ */
 const EXPERIENCE = [
   {
@@ -709,14 +753,16 @@ const EXPERIENCE = [
     company: "Taurgo",
     logo: "/logos/taurgo.png",
     location: "Remote — Cardiff, UK",
+    summary:
+      "I work across the whole product — from React screens to the systems behind them — with a focus on AI features that hold up outside a demo.",
     body: [
-      "Built full-stack features in React against a Node.js API on Supabase — JWT authentication with bcrypt, two-factor authentication via TOTP and email codes, and role-based access with Row Level Security.",
-      "Shipped the notification system end-to-end — in-app feed, unread counts, mark-read/dismiss and admin broadcasts — with rate limiting and a request queue that keeps the API stable under load.",
-      "Designed and tuned the Supabase/PostgreSQL schema behind notifications, surveys, property inventory and billing, cutting database load by 40% with query optimisation and caching.",
-      "Implemented Stripe subscriptions, coupons and tax settings end-to-end, and hardened the API with Helmet, DTO validation and request throttling.",
-      "Introduced Generative AI features using Gemini and OpenAI — AI inspection of property photos, AI-written report summaries — and automated PDF report generation with Puppeteer, PDFKit and Sharp image optimisation, cutting manual work by 70%.",
-      "Built agentic AI workflows with LangChain and LangGraph — multi-step chains, tool calls and RAG pipelines — making the Gemini and OpenAI features reusable and reliable in production.",
-      "Own infrastructure on AWS EC2 with Docker, Nginx load balancing, SSL/TLS and PM2 — 99.9% uptime while cutting hosting costs, frontend on Vercel and releases through a Jenkins CI/CD pipeline.",
+      "Build features in React, Node.js and Supabase, including JWT login, two-factor authentication and role-based access.",
+      "Shipped the notification system end to end: in-app feed, unread counts, mark-read and admin broadcasts, with rate limiting and a request queue to keep the API stable under load.",
+      "Tuned the PostgreSQL schema behind notifications, surveys, inventory and billing, cutting database load by 40% with better queries and caching.",
+      "Added Stripe subscriptions, coupons and tax settings, and hardened the API with validation, Helmet and request throttling.",
+      "Built AI features with Gemini and OpenAI — property photo inspections and auto-written report summaries — and automated PDF reports, cutting manual work by 70%.",
+      "Made those AI features reusable with LangChain and LangGraph workflows, including tool calls and RAG pipelines.",
+      "Own the AWS EC2 setup with Docker, Nginx, SSL and PM2, and ship through a Jenkins CI/CD pipeline — 99.9% uptime at lower hosting cost.",
     ],
   },
   {
@@ -725,9 +771,11 @@ const EXPERIENCE = [
     company: "SmallFare",
     logo: "/logos/smallfare.png",
     location: "Hyderabad, India",
+    summary:
+      "I worked on EFOrganize, a ticketing platform used by event organisers, mostly around onboarding and the dashboard.",
     body: [
-      "Developed onboarding and dashboard features for the EFOrganize ticketing SaaS — implemented authentication, integrated Cashfree for document verification, and improved the Prisma schema.",
-      "Added Redis caching, traffic-throttling, TimescaleDB analytics, and GitHub Actions CI/CD automation.",
+      "Built onboarding and dashboard features, including authentication and Cashfree document verification, and improved the Prisma schema.",
+      "Added Redis caching, request throttling, TimescaleDB analytics and GitHub Actions CI/CD.",
     ],
   },
 ];
@@ -752,7 +800,7 @@ function HireMe() {
       "_blank",
       "noopener,noreferrer"
     );
-    setNote("> your mail client should now be open — hit send there.");
+    setNote("Your email app should open with the message ready — just hit send.");
     setFields({ name: "", email: "", message: "" });
   };
 
@@ -762,7 +810,7 @@ function HireMe() {
   return (
     <form onSubmit={onSubmit}>
       <fieldset className="flex h-full flex-col gap-2 rounded-sm border border-solid border-white/20 bg-dark/40 p-3">
-        <legend className="px-1 text-sm font-bold text-white">Hire Me</legend>
+        <legend className="px-1 text-sm font-bold text-white">Get in touch</legend>
         <div>
           <label className="sr-only" htmlFor="hire-name">
             Name
@@ -795,7 +843,7 @@ function HireMe() {
         <textarea
           required
           name="message"
-          placeholder="what are you building?"
+            placeholder="Tell me about your project…"
           value={fields.message}
           onChange={onChange}
           className={`${field} flex-1 resize-none`}
@@ -804,7 +852,7 @@ function HireMe() {
           type="submit"
           className="w-full cursor-pointer rounded-sm border border-solid border-white/20 bg-accent p-2 font-bold text-dark transition-colors hover:bg-white"
         >
-          Submit
+          Send message
         </button>
         {note && <p className="text-xs text-accent">{note}</p>}
       </fieldset>
@@ -815,9 +863,12 @@ function HireMe() {
 function Experience() {
   return (
     <>
-      <SectionLabel n="3" id="experience">
-        experience
+      <SectionLabel n="04" id="experience">
+        Experience
       </SectionLabel>
+      <p className="-mt-1 pb-5 text-sm leading-relaxed text-white/60">
+        Where I&apos;ve worked and what I actually shipped.
+      </p>
       <div className="grid gap-6 min-sm:grid-cols-1 md:grid-cols-2">
         <section>
           <div className="terminal-timeline">
@@ -851,12 +902,18 @@ function Experience() {
                     </span>
                   </div>
                   <p className="text-xs text-white/40">{job.location}</p>
+                  <p className="border-l border-white/20 pl-3 text-sm leading-relaxed text-white/70">
+                    {job.summary}
+                  </p>
                   {job.body.map((line) => (
                     <p
                       key={line}
-                      className="text-sm leading-relaxed text-white/60 before:content-['-']"
+                      className="flex gap-2 text-sm leading-relaxed text-white/60"
                     >
-                      {line}
+                      <span aria-hidden="true" className="mt-0.5 text-accent">
+                        •
+                      </span>
+                      <span>{line}</span>
                     </p>
                   ))}
                 </div>
@@ -871,7 +928,7 @@ function Experience() {
 }
 
 /* ------------------------------------------------------------------ *
- * 4. _github
+ * 5. github
  * ------------------------------------------------------------------ */
 function useGithub(path) {
   const [data, setData] = useState(null);
@@ -919,10 +976,10 @@ function useGithub(path) {
  * only, and only inside this section.
  * ------------------------------------------------------------------ */
 const GITHUB_STATS = [
-  { key: "followers", label: "followers", color: "#e1e1e1" },
-  { key: "following", label: "following", color: "#adadad" },
-  { key: "public_repos", label: "public repos", color: "#7a7a7a" },
-  { key: "public_gists", label: "public gists", color: "#4d4d4d" },
+  { key: "followers", label: "Followers", color: "#e1e1e1" },
+  { key: "following", label: "Following", color: "#adadad" },
+  { key: "public_repos", label: "Public repos", color: "#7a7a7a" },
+  { key: "public_gists", label: "Public gists", color: "#4d4d4d" },
 ];
 
 function AnimatedCount({ to, duration = 900, delay = 0 }) {
@@ -1063,12 +1120,12 @@ function StatsDonut({ reposCount, active }) {
       </svg>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-[10px] tracking-[0.14em] text-white/40 uppercase">
-          public
+          Public repos
         </span>
         <span className="text-2xl font-bold text-white tabular-nums">
           <AnimatedCount to={reposCount} />
         </span>
-        <span className="text-[10px] text-white/40">repos</span>
+        <span className="text-[10px] text-white/40">on GitHub</span>
       </div>
     </div>
   );
@@ -1272,9 +1329,9 @@ function ContributionDots() {
     <div className="mt-7">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs tracking-[0.14em] text-white/40 uppercase">
-          contributions
+          Contributions
           {!loading && !failed && weeks.length > 0 && (
-            <span className="ml-2 text-white/60 tabular-nums">
+            <span className="ml-2 text-white/60 normal-case tabular-nums">
               {total.toLocaleString()} in {year}
             </span>
           )}
@@ -1302,7 +1359,7 @@ function ContributionDots() {
       </div>
 
       {loading && (
-        <p className="mt-3 text-xs text-white/30">loading contributions…</p>
+        <p className="mt-3 text-xs text-white/30">Loading contributions…</p>
       )}
 
       {failed && (
@@ -1382,9 +1439,12 @@ function Github() {
 
   return (
     <>
-      <SectionLabel n="4" id="github">
-        github
+      <SectionLabel n="05" id="github">
+        GitHub
       </SectionLabel>
+      <p className="-mt-1 pb-5 text-sm leading-relaxed text-white/60">
+        A live snapshot of my public activity and recent repositories.
+      </p>
 
       <a
         href={`https://github.com/${GITHUB_USER}`}
@@ -1432,11 +1492,11 @@ function Github() {
       <ContributionDots />
 
       {profile.loading && (
-        <p className="mt-4 text-xs text-white/40">fetching profile…</p>
+        <p className="mt-4 text-xs text-white/40">Loading profile…</p>
       )}
 
       {repos.loading && (
-        <p className="mt-4 text-xs text-white/40">fetching repositories…</p>
+        <p className="mt-4 text-xs text-white/40">Loading repositories…</p>
       )}
       {repos.error && (
         <div className="mt-4 flex items-start gap-2 rounded-sm border border-white/20 bg-black/40 p-3">
@@ -1455,60 +1515,61 @@ function Github() {
       )}
 
       {!repos.loading && !repos.error && recentRepos.length === 0 && (
-        <p className="mt-4 text-sm text-white/40">no public repositories.</p>
+        <p className="mt-4 text-sm text-white/40">No public repositories yet.</p>
       )}
 
       {recentRepos.length > 0 && (
         <>
           <p className="mt-7 text-xs tracking-[0.14em] text-white/40 uppercase">
-            recent repos
+            Recent repositories
           </p>
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {recentRepos.map((r, i) => (
-            <div
-              key={r.id}
-              className="group mr-1 flex flex-col rounded-sm border border-white/20 bg-black/60 transition-all hover:-translate-y-1 hover:border-[#00ef68] hover:shadow-[4px_4px_0px_0px_#00ef68]"
-            >
-              <div className="flex items-center justify-between border-b border-white/20 bg-black px-4 py-2 transition-colors group-hover:bg-[#00ef68] group-hover:text-black">
-                <span className="truncate font-bold">
-                  {String(i + 1).padStart(2, "0")}_{r.name}
-                </span>
-                <span className="text-xs text-white/60 group-hover:text-black">
-                  [{r.language || "code"}]
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col gap-2 p-4">
-                <div className="text-xs text-white/40">TARGET: SHIPPED</div>
-                <p className="flex-1 text-sm leading-relaxed text-white/60">
-                  {r.description || "No description provided."}
-                </p>
-              </div>
-              <div className="flex items-center justify-between border-t border-white/20 p-4 text-xs text-white/60">
-                <span className="flex items-center gap-2">
-                  <span className="flex items-center gap-1">
-                    <FiStar className="size-3" />
-                    {r.stargazers_count}
+              <div
+                key={r.id}
+                className="group mr-1 flex flex-col rounded-sm border border-white/20 bg-black/60 transition-all hover:-translate-y-1 hover:border-[#00ef68] hover:shadow-[4px_4px_0px_0px_#00ef68]"
+              >
+                <div className="flex items-center justify-between border-b border-white/20 bg-black px-4 py-2 transition-colors group-hover:bg-[#00ef68] group-hover:text-black">
+                  <span className="truncate font-bold">
+                    {String(i + 1).padStart(2, "0")} — {r.name}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <FiGitCommit className="size-3" />
-                    {new Date(r.pushed_at).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
+                  <span className="shrink-0 pl-2 text-xs text-white/60 group-hover:text-black">
+                    {r.language || "code"}
                   </span>
-                </span>
-                <a
-                  href={r.html_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block py-0.5 font-bold text-white/60 transition-colors hover:text-[#00ef68] max-sm:py-1.5"
-                >
-                  REPO &gt;&gt;
-                </a>
+                </div>
+                <div className="flex flex-1 flex-col gap-2 p-4">
+                  <div className="text-xs text-white/40">Public repository</div>
+                  <p className="flex-1 text-sm leading-relaxed text-white/60">
+                    {r.description || "No description yet."}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between border-t border-white/20 p-4 text-xs text-white/60">
+                  <span className="flex items-center gap-2">
+                    <span className="flex items-center gap-1">
+                      <FiStar className="size-3" />
+                      {r.stargazers_count}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <FiGitCommit className="size-3" />
+                      {new Date(r.pushed_at).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </span>
+                  <a
+                    href={r.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`View ${r.name} on GitHub`}
+                    className="inline-block py-0.5 font-bold text-white/60 transition-colors hover:text-[#00ef68] max-sm:py-1.5"
+                  >
+                    View repo
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
         </>
       )}
@@ -1517,7 +1578,7 @@ function Github() {
 }
 
 /* ------------------------------------------------------------------ *
- * 5. _socials
+ * 6. contact
  * ------------------------------------------------------------------ */
 const SOCIALS = [
   { label: "Email", Icon: SiGmail, href: `mailto:${EMAIL}` },
@@ -1529,9 +1590,12 @@ const SOCIALS = [
 function Socials() {
   return (
     <>
-      <SectionLabel n="5" id="socials">
-        socials
+      <SectionLabel n="06" id="contact">
+        Contact
       </SectionLabel>
+      <p className="-mt-1 pb-5 text-sm leading-relaxed text-white/60">
+        The quickest way to reach me is email. You can also find me here:
+      </p>
       <section className="grid grid-cols-1 gap-3 py-4 sm:grid-cols-2 lg:grid-cols-4">
         {SOCIALS.map((s) => {
           const body = (
